@@ -1,0 +1,11 @@
+{% extends 'commonops/changepass.html' %}
+
+{% block error %}
+    <center>
+        {% if errors %}
+            {{ errors }}
+        {% else %}
+            <p style="color: rgb(219, 60, 11);border: .5rem solid black;width: 35rem;background-color: aquamarine;">User with that email does not exist. <br>Consider creating an account or checking your email.</p>
+        {% endif %}
+    </center>
+{% endblock %}

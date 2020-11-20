@@ -1,0 +1,25 @@
+{% extends 'commonops/_base.html' %}
+
+{% block css %}{% endblock %}
+
+{% block title%}Sign Up{% endblock %}
+
+{% block search %}{% endblock %}
+
+{% block body %}
+    <center>
+        <div>
+            <h1 class="h3 mb-3 font-weight-normal" >Create an account.</h1>
+            <hr>
+            {% block error %}{% endblock %}
+            <form method="post">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <button type="submit" class="btn-lg btn-primary btn">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="{% url 'commonops:auth' %}">Login</a></p>
+        </div>
+    </center>
+{% endblock %}

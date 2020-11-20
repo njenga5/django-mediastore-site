@@ -1,0 +1,28 @@
+{% extends 'commonops/_base.html' %}
+{% load static %}
+
+{# {% block css %}{% static 'commonops/css/photostyle.css' %} {% endblock %} #}
+
+{% block title %}Playlist{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <a href="{% url 'commonops:video' 1 %}"><img src="{% static 'commonops/images/bf v cod-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 2 %}"><img src="{% static 'commonops/images/bartender-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 3 %}"><img src="{% static 'commonops/images/young-dumb-broke-thumbnail.png' %}" stle="margin-right: 1rem;text-decoration: none;margin-top: 1rem;" width="257"></a>
+        <a href="{% url 'commonops:video' 4 %}"><img src="{% static 'commonops/images/arma-dance1-thumbnail.png' %}"  width="257"></a>
+
+        <a href="{% url 'commonops:video' 5 %}"><img src="{% static 'commonops/images/arma-dance2-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 6 %}"><img src="{% static 'commonops/images/break-on-me-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 7 %}"><img src="{% static 'commonops/images/summer-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 8 %}"><img src="{% static 'commonops/images/we-were-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 9 %}"><img src="{% static 'commonops/images/careless-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 10 %}"><img src="{% static 'commonops/images/comeback-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 11 %}"><img src="{% static 'commonops/images/copcar-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 12 %}"><img src="{% static 'commonops/images/crossfire-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 13 %}"><img src="{% static 'commonops/images/livefree-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 14 %}"><img src="{% static 'commonops/images/live-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 15 %}"><img src="{% static 'commonops/images/postcards-thumbnail.png' %}"  width="257"></a>
+        <a href="{% url 'commonops:video' 16 %}"><img src="{% static 'commonops/images/strongest-thumbnail.png' %}"  width="257"></a>
+    </div>
+{% endblock %}

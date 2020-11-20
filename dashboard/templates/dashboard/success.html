@@ -1,0 +1,14 @@
+{% extends 'dashboard/upload.html' %}
+
+{% block content %}
+    <h1>Upload profile picture.</h1>
+    <br>
+    <hr>
+    <h2>Your profile picture has been uploaded successfully.</h2>
+    <hr>
+    <div class="picture">
+        <img src="{{ photo.picture.url }}" alt="" height="100px">
+        <p><a href="{% url 'dashboard:upload-photo' %}">Back</a></p>
+    </div>
+
+{% endblock %}
