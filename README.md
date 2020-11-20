@@ -5,4 +5,4 @@ This project was undertaken as a part of learning django and python web developm
 It is not by any means complete or anywhere near completion.
 
 # The Who.
-Am just having fun coz I love python and with django int mix, I even love it more.
+Am just having fun coz I love python and with django in the mix, I even love it more.
