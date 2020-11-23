@@ -10,8 +10,7 @@ def home_view(request):
     return render(request, "commonops/index.html",)
 
 
-def show_video(request, vid_id):
-    return render(request, "commonops/video.html", {"vid_id": vid_id})
+
 
 @sensitive_post_parameters()
 def login(request):

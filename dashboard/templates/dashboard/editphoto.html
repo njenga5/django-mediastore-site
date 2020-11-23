@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="{% static 'dashboard/css/bootstrap.min.css' %}" />
+    <title>Edit Photo | Intranesite</title>
+  </head>
+  <body>
+    <center>
+      <h2 class="h2 mb-3 font-weight-normal">Edit Photo</h2>
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <img
+            src="{{ photo.picture.url }}"
+            class="card-img-top"
+            width="100%"
+            height="225"
+            preserveAspectRatio="xMidYMid slice"
+            focusable="false"
+            role="img"
+          />
+          <div class="card-body">
+            <form class="form-signin" action="{% url 'dashboard:edit-photo' 0 %}" method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-10 mb-1">
+                  <h3>Collections</h3>
+                  <div class="checkbox mb-3 text-center">
+                  {% if collections %}{% for collection in collections %}
+                    <label for="{{ forloop.counter }}"
+                      >{{ collection.name|capfirst }}
+                      <input
+                        class="form-control"
+                        type="checkbox"
+                        name="{{ collection.name }}"
+                        id="{{ forloop.counter }}"
+                    /></label>
+                  {% endfor %}{% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="mb-3">
+                  <label for="description"><h3>Description</h3></label>
+                  <textarea
+                    class="form-control"
+                    name="description"
+                    id="description"
+                    cols="40"
+                    rows="5"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm">
+                    <a href="{% url 'dashboard:profile' %}" class="btn btn-sm btn-outline-secondary"
+                      >Cancel</a
+                    >
+                  </button>
+                  <button type="submit" class="btn btn-sm">
+                    <a class="btn btn-sm btn-outline-success">Update</a>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </center>
+  </body>
+</html>

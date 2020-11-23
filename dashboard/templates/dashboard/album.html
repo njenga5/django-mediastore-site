@@ -1,18 +1,19 @@
 {% extends 'commonops/_base.html' %} {% load static %} {% load humanize %}{% block extrahead %}
 <title>My Album | Intranet</title>
 <link href="{% static 'dashboard/css/album.css' %}" rel="stylesheet" />
-{% endblock %} {% block customnav %} {% include 'dashboard/customnavbar.html' %} {% endblock %} 
+{% endblock %} {% block customnav %} {% include 'dashboard/customnavbar.html' %} {% endblock %}
 {%block content %}
+<div id="top"></div>
 <section class="jumbotron text-center">
-  <div class="container">
+  <div class="container" id="description">
     <h1>My Album</h1>
     <p class="lead text-muted">
       Something short and leading about the collection below—its contents, the creator, etc. Make it
-      short and sweet, but not too short so folks don’t simply skip over it entirely.
+      short and sweet, but not too short.
     </p>
     <p>
-      <a href="#" class="btn btn-primary my-2">Main call to action</a>
-      <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+      <a class="btn btn-primary my-2" id="describe-album">Edit album Description</a>
+      <!-- <a href="#" class="btn btn-secondary my-2">Secondary action</a> -->
     </p>
   </div>
 </section>
@@ -23,14 +24,15 @@
       {% if pictures %} {% for picture in pictures %}
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
-          <a><img
-            src="{{ picture.picture.url }}"
-            class="card-img-top"
-            width="100%"
-            height="225"
-            preserveAspectRatio="xMidYMid slice"
-            focusable="false"
-            role="img"
+          <a
+            ><img
+              src="{{ picture.picture.url }}"
+              class="card-img-top"
+              width="100%"
+              height="225"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+              role="img"
           /></a>
           <div class="card-body">
             <p class="card-text">
@@ -38,8 +40,16 @@
             </p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
-                <a href="{% url 'dashboard:delete-item' 'pic' picture.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                <a
+                  href="{% url 'dashboard:edit-photo' picture.id %}"
+                  class="btn btn-sm btn-outline-secondary"
+                  >Edit</a
+                >
+                <a
+                  href="{% url 'dashboard:delete-item' 'pic' picture.id %}"
+                  class="btn btn-sm btn-outline-danger"
+                  >Delete</a
+                >
               </div>
               <small class="text-muted">{{picture.upload_date.date | naturalday}}</small>
             </div>
@@ -64,9 +74,7 @@
             <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
           </svg>
           <div class="card-body">
-            <p class="card-text">
-              Your photo description
-            </p>
+            <p class="card-text">Your photo description</p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <a href="#" class="btn btn-sm btn-outline-secondary disabled">Edit</a>
@@ -85,13 +93,13 @@
 <footer class="text-muted">
   <div class="container">
     <p class="float-right">
-      <a href="#">Back to top</a>
+      <a href="#top">Back to top</a>
     </p>
-    <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+    <!-- <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
     <p>
       New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read our
       <a href="../getting-started/introduction/">getting started guide</a>.
-    </p>
+    </p> -->
   </div>
 </footer>
 <script
@@ -101,5 +109,42 @@
 ></script>
 <!-- <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script> -->
 <script src="{% static 'commonops/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+  const element = document.querySelector("#describe-album");
+  element.addEventListener("click", function (event) {
+    const html =
+      '<center><form action="{% url "dashboard:profile" %}"method="post" id="desc-form">\
+  {% csrf_token %}\
+  <div class="row">\
+    <div class="col-md-5 mb-3">\
+      <label for="album-title">Title</label>\
+      <input type="text" placeholder="Title" class="form-control" name="title" />\
+    </div>\
+  </div>\
+  <div class="row">\
+    <div class="mb-3">\
+      <label for="album-desc">Description</label>\
+      <textarea\
+        class="form-control"\
+        name="album-description"\
+        id="album-desc"\
+        cols="30"\
+        rows="5"\
+        placeholder="Describe your album..."\
+      ></textarea>\
+    </div>\
+  </div>\
+  <div class="row">\
+    <div class="mb-3 text-center">\
+      <button type="submit" class="btn btn-sm">\
+        <a class="btn btn-primary my-2">Submit Description</a>\
+      </button>\
+    </div>\
+  </div>\
+</form></center>';
+    const elem2 = document.querySelector("#description");
+    elem2.innerHTML = html;
+  });
+</script>
 
 {% endblock %}

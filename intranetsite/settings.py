@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import pathlib
 import os
+
+# This function contains sensitive information (e.g database passwords, emails, emails password, secret key etc )
 
 from intranetsite.sensored import set_up_env
 
@@ -22,7 +23,7 @@ env = set_up_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -136,13 +137,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 
-# Media files(images, music, video)
+# Media files (images, music, video)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 
 # Sessions management
 
@@ -158,3 +160,5 @@ ADMINS = [('John', 'joninduati31@diyintranetsite.com')]
 MANAGERS = [('Njenga', 'njenga@gmail.com')]
 EMAIL_USE_LOCALTIME = True
 
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

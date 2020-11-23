@@ -9,12 +9,10 @@
     <meta name="robots" content="index, follow" />
     <link
       rel="shortcut icon"
-      href="{% static 'commonops/favicon/logo.png' %}"
+      href="{% static 'commonops/favicon/favicon2.png' %}"
       type="image/x-icon"
     />
     {% block extrahead %}{% endblock %}
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/starter-template/" />
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'commonops/css/bootstrap.min.css' %}" rel="stylesheet" />
@@ -34,6 +32,7 @@
           font-size: 3.5rem;
         }
       }
+      {% block extrastyle %}{% endblock %}
     </style>
     <!-- Custom styles for this template -->
     <link href="{% static 'commonops/css/starter-template.css' %}" rel="stylesheet" />

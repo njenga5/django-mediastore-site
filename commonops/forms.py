@@ -1,10 +1,12 @@
 from django import forms
+# from django.forms import Input
 from .models import User
 
+
 class SignUpForm(forms.ModelForm):
-    date_of_birth = forms.DateField(input_formats=["%Y-%m-%d", ], help_text="Enter date in form of YYYY-MM-DD.")
-    password = forms.CharField(widget=forms.PasswordInput())
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     class Meta:
         model = User
         fields = [
@@ -14,6 +16,14 @@ class SignUpForm(forms.ModelForm):
             'phone_number',
             'email',
         ]
+        
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'middle_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control', 'type': 'email'}),
+            }
 
 
 class LoginForm(forms.Form):

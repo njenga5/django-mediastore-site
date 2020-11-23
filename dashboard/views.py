@@ -35,6 +35,8 @@ def dashboard_home(request):
             'max_size': MAX_SPACE,
             'user': user,
             }
+        if request.method == "POST":
+            print(request.POST)
         return render(request, 'dashboard/album.html', context)
     return redirect('commonops:auth')
 
@@ -60,8 +62,7 @@ def upload_photo(request):
             if file_type not in IMG_TYPES:
                 return render(request, 'dashboard/errorphoto.html', {'allowed_types': IMG_TYPES})
             photo.save()
-            messages.add_message(request, messages.INFO, f"Photo {photo.picture.url.split('/')[-1]} uploaded successfully.")
-            messages.get_messages(request)
+            messages.success(request, f"Photo {photo.picture.url.split('/')[-1]} uploaded successfully.")
             return render(request, 'dashboard/uploadphoto.html', {'form': form})
         return render(request, 'dashboard/uploadphoto.html', {'form': form})
 
@@ -178,6 +179,24 @@ def delete_item(request, item, item_id):
                 raise Http404
         return HttpResponseBadRequest('<h1>Bad Request (400)</h1>')
     return redirect('commonops:auth')
+
+
+def edit_photo_view(request, pk):
+    if request.session.has_key('user'):
+        if request.method == 'GET':
+            user = request.session.get('user')
+            photo = get_object_or_404(models.Photo, user_id=user, id=pk)
+            collections = models.Collection.objects.all()
+            context = {
+                'photo': photo,
+                'collections': collections,
+            }
+            return render(request, 'dashboard/editphoto.html', context)
+
+        elif request.method == "POST":
+            print(request.POST)
+    return redirect('commonops:auth')
+
 
 
 def logout(request):
