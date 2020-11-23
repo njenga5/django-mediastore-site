@@ -1,0 +1,11 @@
+.search-area{
+    margin-left: 30rem;
+    margin-top: 3rem;
+}
+#search{
+    width: 60rem;
+    height: 3rem;
+    background-color: rgb(22, 26, 26);
+    font-size: 2rem;
+    color: floralwhite;
+}

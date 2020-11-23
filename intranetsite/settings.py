@@ -144,7 +144,7 @@ STATIC_URL = '/static/'
 # Media files (images, music, video)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 
 # Sessions management
 
