@@ -26,7 +26,7 @@ def login(request):
             try:
                 user = models.User.objects.get(email=request.POST['email'], password=hashlib.md5(request.POST['password'].encode()).hexdigest())
             except models.User.DoesNotExist:
-                return render(request, 'commonops/loginerror.html', {'form': form})
+                return render(request, 'commonops/loginerror.html')
             try:
                 del request.session['email']
             except KeyError:
@@ -42,16 +42,15 @@ def sign_up(request):
         form = forms.SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            data = request.POST
-            user.first_name = data['first_name']
-            user.middle_name = data['middle_name']
-            user.last_name = data['last_name']
-            user.phone_number = data['phone_number']
-            user.date_of_birth = data['date_of_birth']
-            user.email = data['email']
-            user.password = hashlib.md5(data['password'].encode()).hexdigest()
+            user.first_name = form.cleaned_data.get('first_name')
+            user.middle_name = form.cleaned_data.get('middle_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.phone_number = form.cleaned_data.get('phone_number')
+            user.date_of_birth = form.cleaned_data.get('date_of_birth')
+            user.email = form.cleaned_data.get('email')
+            user.password = hashlib.md5(form.cleaned_data.get('password').encode()).hexdigest()
             user.date_joined = timezone.now()
-            if data['password'] != data['confirm_password']:
+            if form.cleaned_data.get('password') != form.cleaned_data.get('confirm_password'):
                 return render(request, 'commonops/signuperror.html', {'error': 'Passwords do not match.'})
             user.save()
             return redirect('commonops:auth')

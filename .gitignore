@@ -1,7 +1,7 @@
+*.pyc
+*.so
 .vscode
 sensored.py
 media
 images
 __pycache__
-*.pyc
-*.so

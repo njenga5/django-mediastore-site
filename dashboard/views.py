@@ -35,8 +35,18 @@ def dashboard_home(request):
             'max_size': MAX_SPACE,
             'user': user,
             }
+        if len(user.albumdescription_set.all()) > 0:
+            context['title'] = \
+                    user.albumdescription_set.order_by('-created_at').first().title
+            context['description'] = \
+                    user.albumdescription_set.order_by('-created_at').first().description
         if request.method == "POST":
-            print(request.POST)
+            form = forms.AlbumDescriptionForm(request.POST)
+            if form.is_valid():
+                details = form.save(commit=False)
+                details.user = user
+                details.save()
+                return redirect('dashboard:profile')
         return render(request, 'dashboard/album.html', context)
     return redirect('commonops:auth')
 

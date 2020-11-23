@@ -6,15 +6,24 @@
 <div id="top"></div>
 <section class="jumbotron text-center">
   <div class="container" id="description">
+    {% if title or description %}
+    <h1>{{ title }}</h1>
+    <p class="lead text-muted">
+      {{  description }}
+    </p>
+    <p>
+      <a class="btn btn-primary my-2" id="describe-album">Edit Album Intro</a>
+    </p>
+    {% else%}
     <h1>My Album</h1>
     <p class="lead text-muted">
       Something short and leading about the collection below—its contents, the creator, etc. Make it
       short and sweet, but not too short.
     </p>
     <p>
-      <a class="btn btn-primary my-2" id="describe-album">Edit album Description</a>
-      <!-- <a href="#" class="btn btn-secondary my-2">Secondary action</a> -->
+      <a class="btn btn-primary my-2" id="describe-album">Edit Album Intro</a>
     </p>
+    {% endif %}
   </div>
 </section>
 
@@ -94,12 +103,6 @@
   <div class="container">
     <p class="float-right">
       <a href="#top">Back to top</a>
-    </p>
-    <!-- <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-    <p>
-      New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read our
-      <a href="../getting-started/introduction/">getting started guide</a>.
-    </p> -->
   </div>
 </footer>
 <script
@@ -107,7 +110,7 @@
   integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
   crossorigin="anonymous"
 ></script>
-<!-- <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script> -->
+<script>window.jQuery || document.write('<script src="{% static "dashboard/js/jquery.slim.min.js" %}"><\/script>')</script>
 <script src="{% static 'commonops/js/bootstrap.bundle.min.js' %}"></script>
 <script>
   const element = document.querySelector("#describe-album");
@@ -126,7 +129,7 @@
       <label for="album-desc">Description</label>\
       <textarea\
         class="form-control"\
-        name="album-description"\
+        name="description"\
         id="album-desc"\
         cols="30"\
         rows="5"\

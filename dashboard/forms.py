@@ -1,6 +1,7 @@
 from django import forms
 from . import models
 
+
 class PhotoForm(forms.ModelForm):
     class Meta:
         model = models.Photo
@@ -27,4 +28,15 @@ class VideoForm(forms.ModelForm):
                 'title',
                 'description',
                 'video',
+        ]
+
+
+class AlbumDescriptionForm(forms.ModelForm):
+    """
+    """
+    class Meta:
+        model = models.AlbumDescription
+        fields = [
+            'title',
+            'description',
         ]
