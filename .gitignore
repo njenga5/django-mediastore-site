@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 .pyc
 .so
+=======
+pyc
+*.so
+>>>>>>> faf52c6ba20b092b6395989c2661aa69d0fb9778
 .vscode
 sensored.py
 media
