@@ -1,5 +1,5 @@
-*.pyc
-*.so
+.pyc
+.so
 .vscode
 sensored.py
 media
