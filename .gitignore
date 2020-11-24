@@ -1,4 +1,4 @@
-*.pyc
+pyc
 *.so
 .vscode
 sensored.py
