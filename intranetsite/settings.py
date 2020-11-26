@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'commonops.apps.CommonopsConfig',
     'dashboard.apps.DashboardConfig',
     'django.contrib.humanize',
+    'crispy_forms',
 
 ]
 

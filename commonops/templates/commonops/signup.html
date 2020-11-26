@@ -1,4 +1,4 @@
-{% extends 'commonops/_base.html' %} {% block css %}{% endblock %} {% block extrahead %}
+{% extends 'commonops/_base.html' %} {% block css %}{% endblock %} {% load crispy_forms_tags %}{% block extrahead %}
 <title>Sign Up</title>
 {% endblock %} {% block extrastyle %} .form-control{ max-width: 30%; text-align: center;} #id_date_of_birth{
     max-width: 14%;} button{ margin-top: 1rem;} {% endblock %} {% block customnav %}{% endblock %} {% block content %}
@@ -9,7 +9,7 @@
     <hr />
     {% block error %}{% endblock %}
     <form method="post">
-      {% csrf_token %} {{ form }}
+      {% csrf_token %} {{ form|crispy }}
       <div class="mb-1">
         <button type="submit" class="btn-lg btn-primary btn">Sign Up</button>
       </div>

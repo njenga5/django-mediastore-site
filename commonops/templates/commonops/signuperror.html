@@ -1,12 +1,12 @@
 {% extends 'commonops/_base.html' %}
 
 {% block css %}{% endblock %}
+{% block customnav%}{% endblock %}
 
-{% block title %} Signup Unsuccessful {% endblock %}
+{% block extrahead%}<title>Signup Unsuccessful</title>{% endblock %}
 
-{% block search %}{% endblock %}
 
-{% block body %}
+{% block content%}
 <a href="{% url 'commonops:signup' %}">Back</a>
     <center>
         <div>
