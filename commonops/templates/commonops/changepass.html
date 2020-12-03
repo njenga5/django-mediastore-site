@@ -1,22 +1,23 @@
 {% extends 'commonops/_base.html' %}
-{% block css %}{% endblock %}
-{% block title %}Refactor Password{% endblock %}
-{% block search %}{% endblock %}
-
-{% block body %}
+{% load crispy_forms_tags %}
+{% block extrahead %}<title>{% block title %}Refactor Password{% endblock %}</title>{% endblock %}
+{% block customnav %}{% endblock %}
+{% block content %}
     <div>
         <center>
-            <h1 style="color: aquamarine;">Change Password.</h1>
-            <hr style="border: 5px solid aquamarine;">
+            <h1 class="h3 mb-3 font-weight-normal">Change Password.</h1>
             {% block error %}{% endblock %}
-            <form action="{% url 'commonops:chpass' %}" method="post">
+            <form class="form" action="{% url 'commonops:chpass' %}" method="post">
                 {% csrf_token %}
-                <table>
-                    {{ form.as_table }}
-                </table>
-                <button type="submit" style="border-radius: 3rem;font-size: 1.3rem;color: black;background-color: aquamarine;margin-left: 5rem;" >Submit</button>
+                    {{ form|crispy }}
+                <button type="submit"  class="btn-lg btn-primary btn col-sm-3 mb-3" >Change Password</button>
             </form>
-            <p>Back to <a href="{% url 'commonops:auth' %}">Login</a> or <a href="{% url 'commonops:signup' %}">Sign Up</a></p>
+            <div class="mb-3 text-center">
+            <p>Back to
+                <a href="{% url 'commonops:auth' %}">Login</a> or
+                <a href="{% url 'commonops:signup' %}">Sign Up</a>
+            </p>
+            </div>
         </center>
     </div>
     <script type="text/javascript">

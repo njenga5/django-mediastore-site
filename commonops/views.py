@@ -1,57 +1,58 @@
 import hashlib
-from django.shortcuts import render, redirect, reverse
-from django.utils import timezone
 from django.core.mail import send_mail
+from django.shortcuts import render, redirect
 from django.views.decorators.debug import sensitive_post_parameters
+from django.conf import settings
+
 from . import models, forms
 
 
 def home_view(request):
-    return render(request, "commonops/index.html",)
-
-
+    return render(request, "commonops/index.html", )
 
 
 @sensitive_post_parameters()
 def login(request):
     form = forms.LoginForm()
     if request.method == 'GET':
-        if request.session.has_key('user'):
-            return redirect('dashboard:profile')
+        if 'user' in request.session:
+            try:
+                models.User.objects.get(email=request.session['user'])
+                return redirect('dashboard:profile')
+            except models.User.DoesNotExist:
+                del request.session['user']
+                return render(request, 'commonops/login.html', {'form': form})
         else:
             return render(request, 'commonops/login.html', {'form': form})
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
         if form.is_valid():
             try:
-                user = models.User.objects.get(email=request.POST['email'], password=hashlib.md5(request.POST['password'].encode()).hexdigest())
+                user = models.User.objects.get(email=form.cleaned_data.get('email'),
+                                               password=hashlib.md5(form.cleaned_data.get('password').encode())
+                                               .hexdigest())
             except models.User.DoesNotExist:
                 return render(request, 'commonops/loginerror.html')
             try:
-                del request.session['email']
+                del request.session['user']
             except KeyError:
                 pass
             request.session['user'] = user.email
             return redirect('dashboard:profile')
         return render(request, 'commonops/login.html', {'form': form})
-    
-@sensitive_post_parameters('password', 'confirm_password', 'email')            
+
+
+@sensitive_post_parameters('password', 'confirm_password', 'email')
 def sign_up(request):
     form = forms.SignUpForm()
     if request.method == 'POST':
         form = forms.SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.first_name = form.cleaned_data.get('first_name')
-            user.middle_name = form.cleaned_data.get('middle_name')
-            user.last_name = form.cleaned_data.get('last_name')
-            user.phone_number = form.cleaned_data.get('phone_number')
             user.date_of_birth = form.cleaned_data.get('date_of_birth')
-            user.email = form.cleaned_data.get('email')
-            user.password = hashlib.md5(form.cleaned_data.get('password').encode()).hexdigest()
-            user.date_joined = timezone.now()
             if form.cleaned_data.get('password') != form.cleaned_data.get('confirm_password'):
                 return render(request, 'commonops/signuperror.html', {'error': 'Passwords do not match.'})
+            user.password = hashlib.md5(form.cleaned_data.get('password').encode()).hexdigest()
             user.save()
             return redirect('commonops:auth')
         return render(request, 'commonops/signuperror.html', {'errors': form.errors})
@@ -76,7 +77,8 @@ def change_password(request):
                 <a href="http://localhost:8000/commonops/auth/"> Change Password.</a>
                 <br><br><br>
                 Don't recognize this action? Change your password immediately.
-                Learn how to secure your account. <a href="http://localhost:8000/commonops/auth/">Learn more.</a><br><br><br><br>
+                Learn how to secure your account. <a href="http://localhost:8000/commonops/auth/">
+                Learn more.</a>{'<br>'*5}
                 <hr>
                 This message was sent to {user.email} since you have an account with Intranet.
                 If you are not {user.email}, please ignore this email.<br><br><br>
@@ -92,7 +94,7 @@ def change_password(request):
 def pricing_view(request):
     return render(request, 'commonops/pricing.html', {})
 
+
 def email_sent(request):
     email = request.session.get('email')
     return render(request, 'commonops/emailsent.html', {'user': email})
-

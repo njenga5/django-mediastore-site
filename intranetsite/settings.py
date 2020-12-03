@@ -11,32 +11,26 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from configparser import ConfigParser
 
-# This function contains sensitive information (e.g database passwords, emails, emails password, secret key etc )
+# Sensitive info configurations
 
-from intranetsite.sensored import set_up_env
-
-# Environment configurations
-
-env = set_up_env()
-
+cfg = ConfigParser()
+cfg.read('media/secrets.txt')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env['SECRET_KEY']
+SECRET_KEY = cfg.get('UNDEPLOYED', 'SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = cfg.get('UNDEPLOYED', 'DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -85,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'intranetsite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -93,14 +86,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'intranetsite',
-        'USER': env['DATABASE_USER'],
-        'PASSWORD': env['DATABASE_PASSWORD'],
-        'HOST':'',
-        'PORT':'',
-        'TIME_ZONE':'Africa/Nairobi'
+        'USER': cfg.get('DATABASE', 'DATABASE_USER'),
+        'PASSWORD': cfg.get('DATABASE', 'DATABASE_PASSWORD'),
+        'HOST': '',
+        'PORT': '',
+        'TIME_ZONE': 'Africa/Nairobi'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -120,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -134,16 +125,14 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIR = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
 ]
-
 
 # Media files (images, music, video)
 
@@ -156,13 +145,12 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
 # SMTP options
-
-EMAIL_HOST_PASSWORD = env['EMAIL_HOST_PASSWORD']
-EMAIL_HOST_USER = 'joninduati31@diyintranetsite.com'
-EMAIL_PORT = 25
-ADMINS = [('John', 'joninduati31@diyintranetsite.com')]
-MANAGERS = [('Njenga', 'njenga@gmail.com')]
+EMAIL_HOST = cfg.get('EMAIL', 'EMAIL_HOST')
+# EMAIL_HOST_PASSWORD = cfg.get('EMAIL', 'EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = 'hostuser@intranetsite.com'
+EMAIL_PORT = 8025
+ADMINS = [('TestAdmin', 'testadmin@intranetsite.com')]
+MANAGERS = [('TestManger', 'testmanager@intranetsite.com')]
 EMAIL_USE_LOCALTIME = True
-
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -1,4 +1,5 @@
 .vscode
+.idea
 # Created by https://www.gitignore.io
 
 ### OSX ###
@@ -83,11 +84,13 @@ target/
 *.log
 *.pot
 *.pyc
-__pycache__/
+.pyc
+commonops/__pycache__/
+dashboard/__pycache__/
 local_settings.py
 
 .env
 db.sqlite3
 media
 django-env
-intranetsite/sensored.py
+sensored.py

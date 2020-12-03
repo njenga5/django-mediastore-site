@@ -7,22 +7,21 @@ from . import forms
 from . import models
 from commonops.models import User
 
-
 IMG_TYPES = ['jpg', 'jpeg', 'png', 'gif', ]
-MUSIC_TYPES = ['mp3', 'ogg', 'm4a', 'wav',]
+MUSIC_TYPES = ['mp3', 'ogg', 'm4a', 'wav', ]
 VIDEO_TYPES = ['mp4', 'webm', '3gp', ]
 MAX_SPACE = 524_288_000
 
 
 def dashboard_home(request):
-    if request.session.has_key('user'):
+    if 'user' in request.session:
         user_email = request.session['user']
         user = get_object_or_404(User, pk=user_email)
         pictures = user.photo_set.order_by('-upload_date')
         musics = user.music_set.order_by('-upload_date')
         videos = user.video_set.order_by('-upload_date')
         pic_size = sum((picture.picture.size for picture in pictures))
-        music_size = sum((music.track.size for music in musics)) 
+        music_size = sum((music.track.size for music in musics))
         vids_size = sum((video.video.size for video in videos))
         context = {
             'pictures': pictures,
@@ -34,12 +33,12 @@ def dashboard_home(request):
             'total_size': sum((pic_size, music_size, vids_size)),
             'max_size': MAX_SPACE,
             'user': user,
-            }
+        }
         if len(user.albumdescription_set.all()) > 0:
             context['title'] = \
-                    user.albumdescription_set.order_by('-created_at').first().title
+                user.albumdescription_set.order_by('-created_at').first().title
             context['description'] = \
-                    user.albumdescription_set.order_by('-created_at').first().description
+                user.albumdescription_set.order_by('-created_at').first().description
         if request.method == "POST":
             form = forms.AlbumDescriptionForm(request.POST)
             if form.is_valid():
@@ -50,10 +49,11 @@ def dashboard_home(request):
         return render(request, 'dashboard/album.html', context)
     return redirect('commonops:auth')
 
+
 def upload_photo(request):
     form = forms.PhotoForm()
     if request.method == "GET":
-        if request.session.has_key('user'):
+        if 'user' in request.session:
             return render(request, 'dashboard/uploadphoto.html', {'form': form})
         else:
             return redirect('commonops:auth')
@@ -62,7 +62,7 @@ def upload_photo(request):
         form = forms.PhotoForm(request.POST, request.FILES)
         if form.is_valid():
             photo = form.save(commit=False)
-            if request.session.has_key('user'):
+            if 'user' in request.session:
                 photo.picture = request.FILES['picture']
                 photo.user = User.objects.get(pk=request.session['user'])
             else:
@@ -80,16 +80,16 @@ def upload_photo(request):
 def upload_music(request):
     form = forms.MusicForm()
     if request.method == 'GET':
-        if request.session.has_key('user'):
+        if 'user' in request.session:
             return render(request, 'dashboard/uploadmusic.html', {'form': form})
         else:
             return redirect('commonops:auth')
-    
+
     elif request.method == 'POST':
         form = forms.MusicForm(request.POST, request.FILES)
         if form.is_valid():
             music = form.save(commit=False)
-            if request.session.has_key('user'):
+            if 'user' in request.session:
                 music.user = User.objects.get(pk=request.session['user'])
             else:
                 return redirect('commonops:auth')
@@ -105,7 +105,7 @@ def upload_music(request):
 def upload_video(request):
     form = forms.VideoForm()
     if request.method == 'GET':
-        if request.session.has_key('user'):
+        if 'user' in request.session:
             return render(request, 'dashboard/uploadvideo.html', {'form': form})
         else:
             return redirect('commonops:auth')
@@ -113,11 +113,11 @@ def upload_video(request):
         form = forms.VideoForm(request.POST, request.FILES)
         if form.is_valid():
             video = form.save(commit=False)
-            if request.session.has_key('user'):
+            if 'user' in request.session:
                 video.user = User.objects.get(pk=request.session['user'])
             else:
                 return redirect('commonops:auth')
-            video.video = request.FILES['video'] 
+            video.video = request.FILES['video']
             file_type = video.video.url.split('.')[-1]
             file_type.lower()
             if file_type not in VIDEO_TYPES:
@@ -131,7 +131,7 @@ def profile_details(request):
         user = get_object_or_404(User, pk=request.session['user'])
         next_birthday = timezone.datetime(timezone.now().year, user.date_of_birth.month, user.date_of_birth.day)
         if timezone.make_aware(next_birthday) <= timezone.now():
-            next_birthday = timezone.datetime(timezone.now().year+1, user.date_of_birth.month, user.date_of_birth.day)
+            next_birthday = timezone.datetime(timezone.now().year + 1, user.date_of_birth.month, user.date_of_birth.day)
         return render(request, 'dashboard/profiledetail.html', {'user': user, 'birthday': next_birthday})
     else:
         return redirect('commonops:auth')
@@ -156,7 +156,8 @@ def add_to_collection(request, item_id, source):
             elif source == 'music':
                 music = get_object_or_404(models.Music, pk=item_id)
                 music.collections.add(collection)
-                return HttpResponse(f'Track {music.track.url.split("/")[-1]} added to collection: {data["collections"]}')
+                return HttpResponse(
+                    f'Track {music.track.url.split("/")[-1]} added to collection: {data["collections"]}')
             else:
                 raise Http404
         return HttpResponseBadRequest('<h1>Bad request (400)</h1>')
@@ -179,7 +180,7 @@ def delete_item(request, item, item_id):
                 os.unlink(path)
                 music.delete()
                 return HttpResponse(f"Music {music.track.url.split('/')[-1]} deleted.")
-            elif item =='vid':
+            elif item == 'vid':
                 video = get_object_or_404(models.Video, user_id=user, pk=item_id)
                 path = video.video.path
                 os.unlink(path)
@@ -206,7 +207,6 @@ def edit_photo_view(request, pk):
         elif request.method == "POST":
             print(request.POST)
     return redirect('commonops:auth')
-
 
 
 def logout(request):

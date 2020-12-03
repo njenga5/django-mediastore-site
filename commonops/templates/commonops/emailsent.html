@@ -1,12 +1,19 @@
 {% extends 'commonops/_base.html' %}
-{% block css %}{% endblock %}
-{% block title %}Email Sent{% endblock %}
-{% block search %}{% endblock %}
+{% block extrahead %}
+<title>{% block title %}Email Sent{% endblock %}</title>
+{% endblock %}
+ {% block customnav %}{% endblock %}
 
-{% block body %}
+{% block content %}
     <center>
-        <div>
-            <p>An email has been sent to {{ user }}. <br>Please check your inbox to confirm.</p>
+        <div class="alert alert-success">
+            <p>An email has been sent to <strong>{{ user }}</strong>. <br>Please check your inbox to confirm.</p>
+            <a href="{% url 'commonops:auth' %}" class="btn btn-outline-primary btn-large" id="backbtn">Back</a>
         </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('#backbtn').click();
+            }, 10000)
+        </script>
     </center>
 {% endblock %}
