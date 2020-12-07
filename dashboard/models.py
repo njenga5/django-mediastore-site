@@ -1,23 +1,17 @@
 from django.db import models
-from commonops.models import User
 from PIL import Image
-
-
-class Collection(models.Model):
-    name = models.CharField(max_length=20)
-    description = models.TextField(null=True, blank=True, max_length=1000)
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
+from taggit.managers import TaggableManager
+from commonops.models import User
    
 
 class Photo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Owner")
-    collections = models.ManyToManyField(Collection)
+    tags = TaggableManager()
+    # collections = models.ManyToManyField(Collection)
     upload_date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True, max_length=1000)
     picture = models.ImageField(upload_to="pictures/")
+
 
     def save(self):
         super().save()
@@ -27,10 +21,10 @@ class Photo(models.Model):
             img.save(self.picture.path)
 
 
-
 class Video(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Owner")
-    collections = models.ManyToManyField(Collection)
+    tags = TaggableManager()
+    # collections = models.ManyToManyField(Collection)
     title = models.CharField(max_length=500)
     upload_date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True, max_length=1000)
@@ -42,7 +36,8 @@ class Video(models.Model):
 
 class Music(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Owner")
-    collections = models.ManyToManyField(Collection)
+    tags = TaggableManager()
+    # collections = models.ManyToManyField(Collection)
     title = models.CharField(max_length=100)
     upload_date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True, max_length=1000)

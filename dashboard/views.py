@@ -138,7 +138,7 @@ def profile_details(request):
 
 
 def add_to_collection(request, item_id, source):
-    if request.session.has_key('user'):
+    if 'user' in request.session:
         if request.method == 'POST':
             data = request.POST
             query_set_colls = models.Collection.objects.all()
@@ -193,11 +193,11 @@ def delete_item(request, item, item_id):
 
 
 def edit_photo_view(request, pk):
-    if request.session.has_key('user'):
+    if 'user' in request.session:
         if request.method == 'GET':
             user = request.session.get('user')
             photo = get_object_or_404(models.Photo, user_id=user, id=pk)
-            collections = models.Collection.objects.all()
+            collections = photo.tags.all()
             context = {
                 'photo': photo,
                 'collections': collections,

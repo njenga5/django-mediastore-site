@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'commonops.apps.CommonopsConfig',
     'dashboard.apps.DashboardConfig',
-    'django.contrib.humanize',
     'crispy_forms',
+    'taggit',
 
 ]
 
@@ -137,7 +138,7 @@ STATICFILES_DIR = [
 # Media files (images, music, video)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 
 # Sessions management
 
@@ -146,7 +147,7 @@ SESSION_COOKIE_AGE = 3600
 
 # SMTP options
 EMAIL_HOST = cfg.get('EMAIL', 'EMAIL_HOST')
-# EMAIL_HOST_PASSWORD = cfg.get('EMAIL', 'EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = cfg.get('EMAIL', 'EMAIL_HOST_PASSWORD')
 EMAIL_HOST_USER = 'hostuser@intranetsite.com'
 EMAIL_PORT = 8025
 ADMINS = [('TestAdmin', 'testadmin@intranetsite.com')]
