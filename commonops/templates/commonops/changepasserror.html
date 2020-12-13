@@ -1,8 +1,8 @@
 {% extends 'commonops/changepass.html' %}
-{% load static %}
 
 {% block error %}
-    <div class="alert alert-danger">
-        <strong>Failed!</strong> Check email or consider creating an account
+    <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Failed!</strong> Check email or consider creating an account 
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
 {% endblock %}

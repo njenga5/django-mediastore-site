@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from commonops.views import home_view
 
 urlpatterns = [
+    path('', home_view),
     path('admin/', admin.site.urls),
     path('common/', include('commonops.urls')),
     path('', include('dashboard.urls')),
+    path('', include('player.urls'))
     ]

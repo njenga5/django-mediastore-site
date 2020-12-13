@@ -30,7 +30,7 @@ SECRET_KEY = cfg.get('UNDEPLOYED', 'SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = cfg.get('UNDEPLOYED', 'DEBUG') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.43.13', 'localhost']
 
 # Application definition
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'commonops.apps.CommonopsConfig',
     'dashboard.apps.DashboardConfig',
+    'player.apps.PlayerConfig',
     'crispy_forms',
     'taggit',
 
@@ -146,9 +147,10 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
 # SMTP options
-EMAIL_HOST = cfg.get('EMAIL', 'EMAIL_HOST')
-EMAIL_HOST_PASSWORD = cfg.get('EMAIL', 'EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = 'hostuser@intranetsite.com'
+# EMAIL_HOST = cfg.get('EMAIL', 'EMAIL_HOST')
+EMAIL_HOST = 'localhost'
+# EMAIL_HOST_PASSWORD = cfg.get('EMAIL', 'EMAIL_HOST_PASSWORD')
+# EMAIL_HOST_USER = 'hostuser@intranetsite.com'
 EMAIL_PORT = 8025
 ADMINS = [('TestAdmin', 'testadmin@intranetsite.com')]
 MANAGERS = [('TestManger', 'testmanager@intranetsite.com')]

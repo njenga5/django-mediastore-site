@@ -1,7 +1,9 @@
 {% extends 'commonops/_base.html' %}
 {% load crispy_forms_tags %}
 {% block extrahead %}<title>{% block title %}Refactor Password{% endblock %}</title>{% endblock %}
-{% block customnav %}{% endblock %}
+{% block extrastyle %}.form-control{
+    text-align:center;
+} {% endblock %}
 {% block content %}
     <div>
         <center>

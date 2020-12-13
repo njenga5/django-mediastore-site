@@ -1,13 +1,11 @@
-{% extends 'dashboard/upload.html' %}
-
-{% block content %}
-    <h1 style="color: red;">Error</h1>
-    <hr style="border: 10px solid red;">
-    <p>You uploaded the wrong file type. <br>Supported image file types are: </p>
-    <ul>
-        {% for type in allowed_types %}
-        <li>{{ type }}</li>
-        {% endfor %}
-    </ul>
-
+{% extends 'dashboard/uploadphoto.html' %} {% block extrahead %}
+<title>Upload Error</title>
+{% endblock %} {% block error %}
+<div class="alert alert-warning">
+  <h1>Error</h1>
+  <p>You selected the wrong file type. <br />Supported image file types are:</p>
+  <ul class="d-flex justify-content-between align-items-center">
+    <li>{{ allowed_types|join:',' }}</li>
+  </ul>
+</div>
 {% endblock %}

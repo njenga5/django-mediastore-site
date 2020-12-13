@@ -1,20 +1,28 @@
-{% extends 'commonops/_base.html' %} {% block css %}{% endblock %} {% load crispy_forms_tags %}{% block extrahead %}
+{% extends 'commonops/_base.html' %} {% load crispy_forms_tags %} {% load static %} {% block extrahead %}
 <title>Sign Up</title>
-{% endblock %} {% block extrastyle %} .form-control{ max-width: 30%; text-align: center;} #id_date_of_birth{
-    max-width: 14%;} button{ margin-top: 1rem;} {% endblock %} {% block customnav %}{% endblock %} {% block content %}
+{% endblock %} {% block extrastyle %} .form-control{text-align: center;} .form-group{text-align:center;}
+ button{ margin-top: 1rem;} {% endblock %} {% block content %}
 
-<center>
-  <div>
+
+  <div class="col-md-8 order-md-1">
     <h1 class="h3 mb-3 font-weight-normal">Create an account.</h1>
     <hr />
     {% block error %}{% endblock %}
-    <form method="post">
+    <form method="post" class="form-signup" >
+      <div class="row" id="row1"></div>
+      <div class="row" id="row2"></div>
+      <div class="row" id="row3"></div>
+      <div class="row" id="row4"></div>
       {% csrf_token %} {{ form|crispy }}
       <div class="mb-1">
-        <button type="submit" class="btn-lg btn-primary btn">Sign Up</button>
+        <hr class="mb-4">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Sign Up</button>
       </div>
     </form>
-    <p>Already have an account? <a href="{% url 'commonops:auth' %}">Login</a></p>
+    <div class="text-center">
+      <p>Already have an account? <a href="{% url 'commonops:auth' %}">Login</a></p>
+    </div>
   </div>
-</center>
+
+<script src="{% static 'commonops/js/signup.js' %}" type="text/javascript"></script>
 {% endblock %}

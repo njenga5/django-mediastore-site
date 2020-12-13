@@ -7,11 +7,13 @@ from . import forms
 from . import models
 from commonops.models import User
 
-IMG_TYPES = ['jpg', 'jpeg', 'png', 'gif', ]
-MUSIC_TYPES = ['mp3', 'ogg', 'm4a', 'wav', ]
+IMG_TYPES = ['bmp', 'dib', 'gif', 'tif', 'tiff', 'jfif', 'jpe', 'jpg', 'jpeg', 'pbm', 'pgm', 'ppm', 'pnm', 'png', 'apng', 'blp', 'bufr', 'cur', 'pcx', 'dcx', 'dds', 'ps', 'eps', 'fit', 'fits', 'fli', 'flc', 'ftc', 'ftu', 'gbr', 'grib', 'h5', 'hdf', 'jp2', 'j2k', 'jpc', 'jpf', 'jpx', 'j2c', 'icns', 'ico', 'im', 'iim', 'mpg', 'mpeg', 'mpo', 'msp', 'palm', 'pcd', 'pdf', 'pxr', 'psd', 'bw', 'rgb', 'rgba', 'sgi', 'ras', 'tga', 'icb', 'vda', 'vst', 'webp', 'wmf', 'emf', 'xbm', 'xpm']
+MUSIC_TYPES = ['mp3', 'ogg', 'm4a', 'wav', 'opus']
 VIDEO_TYPES = ['mp4', 'webm', '3gp', ]
 MAX_SPACE = 524_288_000
-
+A = [22, 45]
+for i in A:
+    IMG_TYPES.insert(i, '\n')
 
 def dashboard_home(request):
     if 'user' in request.session:
@@ -26,9 +28,7 @@ def dashboard_home(request):
         context = {
             'pictures': pictures,
             'pic_size': pic_size,
-            'musics': musics,
             'music_size': music_size,
-            'videos': videos,
             'vids_size': vids_size,
             'total_size': sum((pic_size, music_size, vids_size)),
             'max_size': MAX_SPACE,
@@ -54,7 +54,7 @@ def upload_photo(request):
     form = forms.PhotoForm()
     if request.method == "GET":
         if 'user' in request.session:
-            return render(request, 'dashboard/uploadphoto.html', {'form': form})
+            return render(request, 'dashboard/uploadphoto.html', {'form': form, 'types': IMG_TYPES})
         else:
             return redirect('commonops:auth')
 
@@ -73,8 +73,8 @@ def upload_photo(request):
                 return render(request, 'dashboard/errorphoto.html', {'allowed_types': IMG_TYPES})
             photo.save()
             messages.success(request, f"Photo {photo.picture.url.split('/')[-1]} uploaded successfully.")
-            return render(request, 'dashboard/uploadphoto.html', {'form': form})
-        return render(request, 'dashboard/uploadphoto.html', {'form': form})
+            return render(request, 'dashboard/uploadphoto.html', {'form': form, 'types': IMG_TYPES})
+        return render(request, 'dashboard/uploadphoto.html', {'form': form, 'types': IMG_TYPES})
 
 
 def upload_music(request):
@@ -136,7 +136,7 @@ def profile_details(request):
     else:
         return redirect('commonops:auth')
 
-
+## TODO: Refactor this function to reflect tags
 def add_to_collection(request, item_id, source):
     if 'user' in request.session:
         if request.method == 'POST':

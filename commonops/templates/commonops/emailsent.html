@@ -1,8 +1,7 @@
 {% extends 'commonops/_base.html' %}
 {% block extrahead %}
-<title>{% block title %}Email Sent{% endblock %}</title>
+<title>Email Sent</title>
 {% endblock %}
- {% block customnav %}{% endblock %}
 
 {% block content %}
     <center>
@@ -14,6 +13,7 @@
             setTimeout(() => {
                 document.querySelector('#backbtn').click();
             }, 10000)
+            
         </script>
     </center>
 {% endblock %}
