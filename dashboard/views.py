@@ -136,7 +136,7 @@ def profile_details(request):
     else:
         return redirect('commonops:auth')
 
-## TODO: Refactor this function to reflect tags
+# TODO: Refactor this function to reflect tags
 def add_to_collection(request, item_id, source):
     if 'user' in request.session:
         if request.method == 'POST':

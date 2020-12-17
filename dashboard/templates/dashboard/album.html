@@ -11,7 +11,7 @@
         <a href="{% url 'player:play-audio' %}" class="btn btn-outline-success">Go to Music</a>
       </button>
       <button type="button" class="btn btn-sm">
-        <a href="/" class="btn btn-outline-success">Go to Videos</a>
+        <a href="{% url 'player:play-video' %}" class="btn btn-outline-success">Go to Videos</a>
       </button>
     </div>
     {% if title or description %}
