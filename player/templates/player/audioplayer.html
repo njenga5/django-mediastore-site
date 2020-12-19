@@ -4,11 +4,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'player/css/audiostyle.css' %}" />
-    <link rel="stylesheet" href="{% static 'player/css/all.min.css' %}" />
     <script src="{% static 'player/js/all.js' %}"></script>
     <link rel="shortcut icon" href="{% static 'commonops/favicon/favicon2.png' %}" type="image/x-icon">
     <title>Music Player</title>
+    <link rel="stylesheet" href="{% static 'player/css/audiostyle.css' %}" />
+    <link rel="stylesheet" href="{% static 'player/css/all.min.css' %}" />
   </head>
   <body>
     {{ musics|json_script:'audio-src' }}

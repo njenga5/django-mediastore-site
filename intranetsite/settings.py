@@ -30,7 +30,7 @@ SECRET_KEY = cfg.get('UNDEPLOYED', 'SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = cfg.get('UNDEPLOYED', 'DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['192.168.43.13', 'localhost']
+ALLOWED_HOSTS = ['192.168.43.13', 'localhost', '33236fc0e501.au.ngrok.io']
 
 # Application definition
 

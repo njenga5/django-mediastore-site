@@ -1,72 +1,82 @@
-{% extends 'commonops/_base.html' %} {% load static %}{% block extrahead %}
+{% extends 'dashboard/album.html' %} {% load static %}{% block extrahead %}
 <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'player/css/videostyle.css' %}" />
 <script src="https://vjs.zencdn.net/7.10.2/video.js"></script>
 <title>Video Player</title>
- {% endblock %} {% block content %}<!-- Start content -->{{ urls|json_script:'vid-sources' }} 
-<div class="container d-flex justify-content-between">
-  <div class="vid-container embed-responsive">
-    <div class="col-md-12">
-      <div class="card mb-4 shadow-sm">
-        <video id="video" class="video-js vjs-big-play-centered" width="708" poster="index.jpg">
-          <p class="vjs-no-js">
-            To view this video please enable JavaScript, and consider upgrading to a web browser that
-            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-          </p>
-        </video>
-        <div class="card-body">
-          <div class="d-flex justify-content-center align-items-center">
-            <div>
-              <h2 id="title" class="h2 font-weight-normal"></h2>
+{% endblock %} 
+{% block content %}
+  <!-- Start content -->{{ urls|json_script:'vid-sources' }}
+  <div class="container d-flex justify-content-between">
+    <div class="vid-container embed-responsive">
+      <div class="col-md-12">
+        <div class="card mb-4 shadow-sm">
+          <video id="video" class="video-js vjs-big-play-centered" width="708">
+            <p class="vjs-no-js">
+              To view this video please enable JavaScript, and consider upgrading to a web browser
+              that
+              <a href="https://videojs.com/html5-video-support/" target="_blank"
+                >supports HTML5 video</a
+              >
+            </p>
+          </video>
+          <div class="card-body">
+            <div class="d-flex justify-content-center align-items-center">
+              <div>
+                <h2 id="title" class="h2 font-weight-normal"></h2>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-  </div>
-  <div class="block d-block">
-    {% for video in videos %}
-    <!-- Start card {{ forloop.counter }}-->
-    <div class="col-md-12">
-      <div class="card mb-4 shadow-sm">
-        <svg
-          class="bd-placeholder-img card-img-top"
-          width="100%"
-          height="225"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="xMidYMid slice"
-          focusable="false"
-          role="img"
-          aria-label="Placeholder: Thumbnail"
-        >
-          <title>Placeholder</title>
-          <rect width="100%" height="100%" fill="#55595c" />
-          <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-        </svg>
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm">
-                <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
-              </button>
-              <button type="button" class="btn btn-sm" id="play{{ forloop.counter0 }}">
-                <a {% if forloop.first %} class="btn btn-sm disabled btn-outline-secondary" >Playing{% else %} class="btn btn-sm btn-outline-primary" >Play {% endif %}</a>
-              </button>
-            </div>
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm">
-                <a href="{% url 'dashboard:delete-item' 'vid' video.id %}" class="btn btn-sm  {% if forloop.first %} disabled btn-outline-secondary {% else %} btn-outline-danger {% endif %}">Delete</a>
-              </button>
+    <div class="block d-block">
+      {% for video in videos %}
+      <!-- Start card {{ forloop.counter }}-->
+      <div class="col-md-12">
+        <div class="card mb-4 shadow-sm">
+          <svg
+            class="bd-placeholder-img card-img-top"
+            width="100%"
+            height="225"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMidYMid slice"
+            focusable="false"
+            role="img"
+            aria-label="Placeholder: Thumbnail"
+          >
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#55595c" />
+            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+          </svg>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm">
+                  <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                </button>
+                <button type="button" class="btn btn-sm play" index="{{ forloop.counter0 }}">
+                  <a {% if forloop.first %} class="btn btn-sm disabled btn-outline-secondary"
+                    >Playing{% else %} class="btn btn-sm btn-outline-primary" >Play {% endif %}</a
+                  >
+                </button>
+              </div>
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm">
+                  <a
+                    href="{% url 'dashboard:delete-item' 'vid' video.id %}"
+                    class="btn btn-sm {% if forloop.first %} disabled btn-outline-secondary {% else %} btn-outline-danger {% endif %}"
+                    >Delete</a
+                  >
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- End card -->
+      {% endfor %}
     </div>
-    <!-- End card -->
-    {% endfor %}
   </div>
-</div>
-<!-- End content -->
-<script src="{% static 'player/js/videoplayer.js' %}"></script>
+  <!-- End content -->
+  <script src="{% static 'player/js/videoplayer.js' %}"></script>
 {% endblock %}
