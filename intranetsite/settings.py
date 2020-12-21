@@ -11,12 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from configparser import ConfigParser
 
-# Sensitive info configurations
-
-cfg = ConfigParser()
-cfg.read('media/secrets.txt')
+# Secret information
+env = os.environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,12 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = cfg.get('UNDEPLOYED', 'SECRET_KEY')
+SECRET_KEY = 'f$o$pa1_zbbo&u!4z0i=^ynol*q@7_7bw*vq#_z%%y7mpx3*ucq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = cfg.get('UNDEPLOYED', 'DEBUG') == 'True'
+DEBUG = env.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['192.168.43.13', 'localhost', '33236fc0e501.au.ngrok.io']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -86,10 +83,10 @@ WSGI_APPLICATION = 'intranetsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'intranetsite',
-        'USER': cfg.get('DATABASE', 'DATABASE_USER'),
-        'PASSWORD': cfg.get('DATABASE', 'DATABASE_PASSWORD'),
+        'ENGINE': 'django.db.backends.mysql' if env.get('DATABASE_USER') else 'django.db.backends.sqlite3',
+        'NAME': 'intranetsite' if env.get('DATABASE_USER') else os.path.join(BASE_DIR, 'db.qlite3'),
+        'USER': env.get('DATABASE_USER'),
+        'PASSWORD': env.get('DATABASE_PASSWORD'),
         'HOST': '',
         'PORT': '',
         'TIME_ZONE': 'Africa/Nairobi'
@@ -143,14 +140,13 @@ MEDIA_URL = '/media/'
 
 # Sessions management
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
-# SMTP options
-# EMAIL_HOST = cfg.get('EMAIL', 'EMAIL_HOST')
-EMAIL_HOST = 'localhost'
-# EMAIL_HOST_PASSWORD = cfg.get('EMAIL', 'EMAIL_HOST_PASSWORD')
-# EMAIL_HOST_USER = 'hostuser@intranetsite.com'
+# SMTP/Email options
+
+EMAIL_HOST = env.get('EMAIL_HOST') if env.get('EMAIL_HOST') else ''
+EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD') if env.get('EMAIL_HOST_PASSWORD') else ''
+EMAIL_HOST_USER = 'hostuser@intranetsite.com'
 EMAIL_PORT = 8025
 ADMINS = [('TestAdmin', 'testadmin@intranetsite.com')]
 MANAGERS = [('TestManger', 'testmanager@intranetsite.com')]
