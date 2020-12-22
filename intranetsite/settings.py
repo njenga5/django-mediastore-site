@@ -146,7 +146,7 @@ SESSION_COOKIE_AGE = 3600
 
 EMAIL_HOST = env.get('EMAIL_HOST') if env.get('EMAIL_HOST') else ''
 EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD') if env.get('EMAIL_HOST_PASSWORD') else ''
-EMAIL_HOST_USER = 'hostuser@intranetsite.com'
+EMAIL_HOST_USER = env.get('EMAIL_HOST_USER') if env.get('EMAIL_HOST_USER') else ''
 EMAIL_PORT = 8025
 ADMINS = [('TestAdmin', 'testadmin@intranetsite.com')]
 MANAGERS = [('TestManger', 'testmanager@intranetsite.com')]

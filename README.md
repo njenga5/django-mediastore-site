@@ -7,8 +7,8 @@ Intranetsite is a project undertaken as a process of learning Django framework. 
 3. Run the migrations.
 4. Set debug to True in settings.py
 5. Spin up the django development server.
-6. Visit http://localhost:8000/.
-7. Explore!.
+6. Visit [link] http://localhost:8000/.
+7. Explore!
 
 ## Keep in mind
 -> The secret key is provided in plain text for this to work out of the box.<br/>
