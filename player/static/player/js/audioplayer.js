@@ -84,11 +84,10 @@ function togglePlaylist() {
   }
 }
 
-function addList() {
-  sourceUrl = document.getElementById('sourceUrl').value;
-  sourceUrl.split(",").forEach((file) => {
-    fileUrl = file.trim();
-    if (fileUrl != "" && playlist.indexOf(fileUrl) == -1) {
+function addList(playlist) {
+  playlist.forEach((file) => {
+    fileUrl = file.split('/')[3].split('.')[0];
+    if (fileUrl != "") {
       parent = document.getElementById('list');
       listItem = document.createElement('div');
       listItem.setAttribute('class','list-item');
@@ -102,13 +101,20 @@ function addList() {
       wrapper.appendChild(span);
       listItem.appendChild(wrapper);
 
-      btn = document.createElement('button');
-      btn.setAttribute('onclick','removeList(this)');
-      btn.innerHTML = '&times;';
+      btn1 = document.createElement('button');
+      btn1.setAttribute('onclick','removeList(this)');
+      btn1.innerHTML = '&times;';
 
-      listItem.appendChild(btn);
+      btn2 = document.createElement('button');
+      // btn2.setAttribute('onclick','removeList(this)');
+
+      trashIcon = document.createElement('i')
+      trashIcon.className = 'fa fa-trash'
+
+      btn2.appendChild(trashIcon)
+      listItem.appendChild(btn1);
+      listItem.appendChild(btn2);
       parent.appendChild(listItem);
-      playlist.push(fileUrl);
     }
   });
   document.getElementById('sourceUrl').value = '';
@@ -152,12 +158,12 @@ var input = document.getElementById("sourceUrl");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
     event.preventDefault();
-    addList();
+    // addList();
   }
 });
 
 
-// This area of code is only for preview purposes only
+
 
 const sources = document.getElementById('audio-src').textContent
 const parser = (sources) => {
@@ -165,6 +171,7 @@ const parser = (sources) => {
   const cleanUrl = obj.audio.map((url)=>url
   )
   playlist = cleanUrl
+  addList(playlist)
 }
 parser(sources)
 

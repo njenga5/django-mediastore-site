@@ -3,7 +3,7 @@ from .models import User
 
 
 class SignUpForm(forms.ModelForm):
-    date_of_birth = forms.DateField(widget=forms.DateInput())
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 

@@ -13,15 +13,15 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <form enctype="multipart/form-data" method="post" class="form">
+      <form enctype="multipart/form-data" method="post" class="form-horizontal">
         {% csrf_token %} {{ form|crispy }}
-        <p>Allowed file extensions are: {{ types|join:',' }}</p>
+        {% comment %} <p>Allowed file extensions are: {{ types|join:',' }}</p> {% endcomment %}
         <div class="d-flex justify-content-between align-items-center">
           <div class="btn-group">
             <button type="submit" class="btn btn-sm">
               <a class="btn btn-primary my-2">Upload</a>
             </button>
-            <button id="done-btn" class="btn btn-sm display-flex">
+            <button type="button" id="done-btn" class="btn btn-sm">
               <a class="btn btn-secondary">Done</a>
             </button>
           </div>

@@ -1,9 +1,8 @@
 import hashlib
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.views.decorators.debug import sensitive_post_parameters
 from django.conf import settings
-
 from . import models, forms
 
 
@@ -12,7 +11,7 @@ def home_view(request):
 
 
 @sensitive_post_parameters()
-def login(request):
+def login(request,*args, **kwargs):
     form = forms.LoginForm()
     if request.method == 'GET':
         if 'user' in request.session:
@@ -22,8 +21,7 @@ def login(request):
             except models.User.DoesNotExist:
                 del request.session['user']
                 return render(request, 'commonops/login.html', {'form': form})
-        else:
-            return render(request, 'commonops/login.html', {'form': form})
+
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
         if form.is_valid():
@@ -39,11 +37,11 @@ def login(request):
                 pass
             request.session['user'] = user.email
             return redirect('dashboard:profile')
-        return render(request, 'commonops/login.html', {'form': form})
+    return render(request, 'commonops/login.html', {'form': form})
 
 
 @sensitive_post_parameters('password', 'confirm_password', 'email')
-def sign_up(request):
+def sign_up(request,*args, **kwargs):
     form = forms.SignUpForm()
     if request.method == 'POST':
         form = forms.SignUpForm(request.POST)
@@ -59,7 +57,7 @@ def sign_up(request):
     return render(request, 'commonops/signup.html', {'form': form})
 
 
-def change_password(request):
+def change_password(request,*args, **kwargs):
     form = forms.ChangePassForm()
     if request.method == "GET":
         return render(request, 'commonops/changepass.html', {'form': form})
@@ -67,10 +65,10 @@ def change_password(request):
         form = forms.ChangePassForm(request.POST)
         if form.is_valid():
             try:
-                user = models.User.objects.get(email=request.POST['email'])
+                user = models.User.objects.get(email=form.cleaned_data.get('email'))
             except models.User.DoesNotExist:
                 return render(request, 'commonops/changepasserror.html', {'form': form})
-            subject = 'Account change password - Intranet.'
+            subject = 'Account Password Change Request- Intranet.'
             message = f"""
                 You have requested to change your account's password.
                 Please click the link below to confirm.<br><br>
@@ -91,10 +89,10 @@ def change_password(request):
         return render(request, 'commonops/changepasserror.html', {'form': form, 'errors': form.errors})
 
 
-def pricing_view(request):
+def pricing_view(request,*args, **kwargs):
     return render(request, 'commonops/pricing.html', {})
 
 
-def email_sent(request):
+def email_sent(request,*args, **kwargs):
     email = request.session.get('email')
     return render(request, 'commonops/emailsent.html', {'user': email})
