@@ -1,11 +1,12 @@
 {% extends 'dashboard/album.html' %} {% load static %}{% block extrahead %}
-<link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
+<link href="{% static 'player/css/video-js.css' %}" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'player/css/videostyle.css' %}" />
 <script src="https://vjs.zencdn.net/7.10.2/video.js"></script>
 <title>Video Player</title>
+  {{ urls|json_script:'vid-sources' }}
 {% endblock %} 
 {% block content %}
-  <!-- Start content -->{{ urls|json_script:'vid-sources' }}
+<!-- Start content -->
   <div class="container d-flex justify-content-between">
     <div class="vid-container embed-responsive">
       <div class="col-md-12">
@@ -46,7 +47,10 @@
           >
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#55595c" />
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ video.title }}</text>
+            <circle cx="90%" cy="10%" fill="#fff" r="10"/>
+            <text x="90%" y="10%" fill="#000" dy=".3em">{{ forloop.counter }}</text>
+            
           </svg>
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
@@ -54,19 +58,16 @@
                 <button type="button" class="btn btn-sm">
                   <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
                 </button>
-                <button type="button" class="btn btn-sm play" index="{{ forloop.counter0 }}">
-                  <a {% if forloop.first %} class="btn btn-sm disabled btn-outline-secondary"
-                    >Playing{% else %} class="btn btn-sm btn-outline-primary" >Play {% endif %}</a
+                <button type="button" class="btn btn-sm play-btn" index="{{ forloop.counter0 }}">
+                  <a class="btn btn-sm btn-outline-primary" >Play</a
                   >
                 </button>
               </div>
               <div class="btn-group">
-                <button type="button" class="btn btn-sm">
+                <button type="button" class="btn btn-sm delete-btn">
                   <a
                     href="{% url 'dashboard:delete-item' 'vid' video.id %}"
-                    class="btn btn-sm {% if forloop.first %} disabled btn-outline-secondary {% else %} btn-outline-danger {% endif %}"
-                    >Delete</a
-                  >
+                    class="btn btn-sm btn-outline-danger">Delete</a>
                 </button>
               </div>
             </div>

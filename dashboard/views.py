@@ -9,7 +9,7 @@ from commonops.models import User
 
 IMG_TYPES = ['bmp', 'dib', 'gif', 'tif', 'tiff', 'jfif', 'jpe', 'jpg', 'jpeg', 'pbm', 'pgm', 'ppm', 'pnm', 'png', 'apng', 'blp', 'bufr', 'cur', 'pcx', 'dcx', 'dds', 'ps', 'eps', 'fit', 'fits', 'fli', 'flc', 'ftc', 'ftu', 'gbr', 'grib', 'h5', 'hdf', 'jp2', 'j2k', 'jpc', 'jpf', 'jpx', 'j2c', 'icns', 'ico', 'im', 'iim', 'mpg', 'mpeg', 'mpo', 'msp', 'palm', 'pcd', 'pdf', 'pxr', 'psd', 'bw', 'rgb', 'rgba', 'sgi', 'ras', 'tga', 'icb', 'vda', 'vst', 'webp', 'wmf', 'emf', 'xbm', 'xpm']
 MUSIC_TYPES = ['mp3', 'ogg', 'm4a', 'wav', 'opus']
-VIDEO_TYPES = ['mp4', 'webm', '3gp', ]
+VIDEO_TYPES = ['mp4', 'webm', '3gp', 'mkv']
 MAX_SPACE = 524_288_000
 A = [22, 45]
 for i in A:
@@ -54,7 +54,7 @@ def upload_photo(request):
     form = forms.PhotoForm()
     if request.method == "GET":
         if 'user' in request.session:
-            return render(request, 'dashboard/uploadphoto.html', {'form': form, 'types': IMG_TYPES})
+            return render(request, 'dashboard/uploadphoto.html', {'form': form})
         else:
             return redirect('commonops:auth')
 
