@@ -114,19 +114,21 @@
   </div>
 </footer>
 <script>
+    
   const element = document.querySelector("#describe-album");
-  element.addEventListener("click", function (event) {
+  element.addEventListener("click",  () => {
+   
     const html =
-      '<div ><form action="{% url "dashboard:profile" %}"method="post" id="desc-form" class="form">\
+      '<div><form method="post" id="desc-form" class="form">\
   {% csrf_token %}\
   <div class="row">\
-    <div class="col-md-5 mb-3">\
+    <div class="col-md-6 mb-3">\
       <label for="album-title">Title</label>\
-      <input type="text" placeholder="Title" class="form-control col-lg" name="title" required/>\
+      <input type="text" id="album-title" placeholder="Title" class="form-control col-lg text-center" name="title" required/>\
     </div>\
   </div>\
   <div class="row">\
-    <div class="mb-3">\
+    <div class="col-md-6 mb-3">\
       <label for="album-desc">Description</label>\
       <textarea\
         class="form-control"\
@@ -139,15 +141,22 @@
     </div>\
   </div>\
   <div class="row">\
-    <div class="mb-3 text-center">\
+    <div class="mb-3 text-center btn-group">\
       <button type="submit" class="btn btn-sm">\
         <a class="btn btn-primary my-2">Submit Description</a>\
       </button>\
+      <button id="refresh" type="button" class="btn btn-sm">\
+        <a class="btn btn-secondary my-2">Cancel</a>\
+      </button>\
     </div>\
   </div>\
-</form></div>';
+  </form>\
+  </div>';
     const elem2 = document.querySelector("#description");
     elem2.innerHTML = html;
+  document.getElementById('refresh').onclick = () =>{
+    window.location.pathname = '/home/'
+  }
   });
 </script>
 
