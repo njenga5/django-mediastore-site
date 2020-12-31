@@ -16,6 +16,7 @@ div_id_first_name.appendChild(div);
 div_id_first_name.classList.add("col-md-6");
 div_id_middle_name.classList.add("col-md-6");
 
+
 row1.appendChild(div_id_first_name);
 row1.appendChild(div_id_middle_name);
 
@@ -40,3 +41,4 @@ div_id_date_of_birth.classList.add("col-md-4");
 
 row3.appendChild(div_id_email);
 row3.appendChild(div_id_date_of_birth);
+
