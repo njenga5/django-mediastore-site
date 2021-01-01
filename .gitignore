@@ -85,12 +85,12 @@ target/
 *.pot
 *.pyc
 .pyc
-commonops/__pycache__/
-dashboard/__pycache__/
 local_settings.py
 
 .env
 db.sqlite3
 media
 django-env
-sensored.py
+migrations
+*/__pycache__
+
