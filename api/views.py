@@ -14,8 +14,6 @@ class UserView(APIView):
             user = User.objects.get(pk=request.GET.get('email'),
             password=hashlib.md5(request.GET.get('password', '').encode()).hexdigest())
             serializer = serializers.UserSerializer(user)
-            if not request.session.exists(request.session.session_key):
-                request.session.create()
             return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)

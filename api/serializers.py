@@ -6,7 +6,7 @@ from dashboard import models
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ["full_name", "email", "phone_number"]
 
 
 class PhotoSerializer(serializers.ModelSerializer):
