@@ -1,14 +1,15 @@
 {% extends 'commonops/_base.html' %} {% load crispy_forms_tags %} {% load static %} {% block extrahead %}
 <title>Sign Up</title>
+<link rel="stylesheet" type="text/css" href="{% static 'commonops/css/signup.css' %}">
 {% endblock %} {% block extrastyle %} .form-control{text-align: center;} .form-group{text-align:center;}
  button{ margin-top: 1rem;} {% endblock %} {% block content %}
 
 
-  <div class="col-md-8 order-md-1">
-    <h1 class="h3 mb-3 font-weight-normal">Create an account.</h1>
-    <hr />
+  {% comment %} <div class="col-md-8 order-md-1"> {% endcomment %}
     {% block error %}{% endblock %}
     <form method="post" class="form-signup" >
+    <h1 class="h3 mb-3 font-weight-normal text-center">Create an account.</h1>
+    <hr />
       <div class="row" id="row1"></div>
       <div class="row" id="row2"></div>
       {% csrf_token %} {{ form|crispy }}
@@ -20,7 +21,7 @@
     <div class="text-center">
       <p>Already have an account? <a href="{% url 'commonops:auth' %}">Login</a></p>
     </div>
-  </div>
+  {% comment %} </div> {% endcomment %}
 
 <script src="{% static 'commonops/js/signup.js' %}" type="text/javascript"></script>
 {% endblock %}

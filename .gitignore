@@ -85,11 +85,12 @@ target/
 *.pot
 *.pyc
 .pyc
-
 local_settings.py
 
 .env
 db.sqlite3
 media
 django-env
+migrations
+**/__pycache__/**
 
