@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'commonops.apps.CommonopsConfig',
     'dashboard.apps.DashboardConfig',
     'player.apps.PlayerConfig',
+    'api.apps.ApiConfig',
     'rest_framework',
     'crispy_forms',
     'taggit',

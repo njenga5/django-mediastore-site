@@ -47,10 +47,9 @@ def sign_up(request,*args, **kwargs):
         form = forms.SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.date_of_birth = form.cleaned_data.get('date_of_birth')
             if form.cleaned_data.get('password') != form.cleaned_data.get('confirm_password'):
                 return render(request, 'commonops/signuperror.html', {'error': 'Passwords do not match.'})
-            user.password = hashlib.md5(form.cleaned_data.get('password').encode()).hexdigest()
+            user.password = form.cleaned_data.get('password')
             user.save()
             return redirect('commonops:auth')
         return render(request, 'commonops/signuperror.html', {'errors': form.errors})

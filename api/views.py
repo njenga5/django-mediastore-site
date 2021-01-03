@@ -1,4 +1,5 @@
 import hashlib
+from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
@@ -9,6 +10,7 @@ from . import serializers
 
 
 class UserView(APIView):
+
     def get(self, request):
         try:
             user = User.objects.get(pk=request.GET.get('email'),
@@ -19,9 +21,10 @@ class UserView(APIView):
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
     
     def post(self, request):
+        # if not request.GET.get("token"):
+        #     return Response({'error':'forbidden'}, status=status.HTTP_403_FORBIDDEN)
         serializer = serializers.UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.validated_data['password'] = hashlib.md5(serializer.validated_data['password'].encode()).hexdigest()
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
