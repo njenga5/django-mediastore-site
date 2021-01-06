@@ -10,7 +10,6 @@ from . import serializers
 
 
 class UserView(APIView):
-
     def get(self, request):
         try:
             user = User.objects.get(pk=request.GET.get('email'),
