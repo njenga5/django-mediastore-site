@@ -29,7 +29,4 @@ body {
 .row .form-control:focus {
   z-index: 2;
 }
-.asteriskField{
-  color: red;
-  margin-left: 5px;
-}
+

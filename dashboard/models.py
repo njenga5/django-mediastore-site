@@ -1,11 +1,12 @@
 from django.db import models
 from PIL import Image
 from taggit.managers import TaggableManager
+from django.utils.translation import gettext_lazy as _
 from commonops.models import User
    
 
 class Photo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Owner")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("Owner"))
     tags = TaggableManager()
     # collections = models.ManyToManyField(Collection)
     upload_date = models.DateTimeField(auto_now_add=True)
@@ -22,7 +23,7 @@ class Photo(models.Model):
 
 
 class Video(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Owner")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("Owner"))
     tags = TaggableManager()
     # collections = models.ManyToManyField(Collection)
     title = models.CharField(max_length=500)
@@ -35,7 +36,7 @@ class Video(models.Model):
 
 
 class Music(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Owner")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("Owner"))
     tags = TaggableManager()
     # collections = models.ManyToManyField(Collection)
     title = models.CharField(max_length=100)
@@ -51,7 +52,7 @@ class AlbumDescription(models.Model):
     """
     Gives the title and description for the introductory text in the album.
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Owner")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("Owner"))
     title = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

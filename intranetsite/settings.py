@@ -27,7 +27,7 @@ SECRET_KEY = 'f$o$pa1_zbbo&u!4z0i=^ynol*q@7_7bw*vq#_z%%y7mpx3*ucq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.43.13', 'localhost']
 
 # Application definition
 
@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'commonops.apps.CommonopsConfig',
     'dashboard.apps.DashboardConfig',
     'player.apps.PlayerConfig',
+    'api.apps.ApiConfig',
+    'rest_framework',
     'crispy_forms',
     'taggit',
 
@@ -85,8 +87,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql' if env.get('DATABASE_USER') else 'django.db.backends.sqlite3',
         'NAME': 'intranetsite' if env.get('DATABASE_USER') else os.path.join(BASE_DIR, 'db.qlite3'),
-        'USER': env.get('DATABASE_USER'),
-        'PASSWORD': env.get('DATABASE_PASSWORD'),
+        'USER': env.get('DATABASE_USER', ''),
+        'PASSWORD': env.get('DATABASE_PASSWORD', ''),
         'HOST': '',
         'PORT': '',
         'TIME_ZONE': 'Africa/Nairobi'
@@ -133,7 +135,7 @@ STATICFILES_DIR = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Media files (images, music, video)
+# User uploaded media files (images, music, video)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -144,9 +146,9 @@ SESSION_COOKIE_AGE = 3600
 
 # SMTP/Email options
 
-EMAIL_HOST = env.get('EMAIL_HOST') if env.get('EMAIL_HOST') else ''
-EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD') if env.get('EMAIL_HOST_PASSWORD') else ''
-EMAIL_HOST_USER = env.get('EMAIL_HOST_USER') if env.get('EMAIL_HOST_USER') else ''
+EMAIL_HOST = env.get('EMAIL_HOST', '')
+EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_USER = env.get('EMAIL_HOST_USER', '')
 EMAIL_PORT = 8025
 ADMINS = [('TestAdmin', 'testadmin@intranetsite.com')]
 MANAGERS = [('TestManger', 'testmanager@intranetsite.com')]
