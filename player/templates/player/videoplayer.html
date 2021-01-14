@@ -1,7 +1,8 @@
 {% extends 'dashboard/album.html' %} {% load static %}{% block extrahead %}
 <link href="{% static 'player/css/video-js.css' %}" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'player/css/videostyle.css' %}" />
-<script src="https://vjs.zencdn.net/7.10.2/video.js"></script>
+<script src="{% static 'player/js/video.js' %}"></script>
+{% comment %} <script src="https://vjs.zencdn.net/7.10.2/video.js"></script> {% endcomment %}
 <title>Video Player</title>
   {{ urls|json_script:'vid-sources' }}
 {% endblock %} 
@@ -45,7 +46,7 @@
             role="img"
             aria-label="Placeholder: Thumbnail"
           >
-            <title>Placeholder</title>
+            <title>{{ video.title }}</title>
             <rect width="100%" height="100%" fill="#55595c" />
             <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ video.title }}</text>
             <circle cx="90%" cy="10%" fill="#fff" r="10"/>

@@ -20,13 +20,26 @@ class UserView(APIView):
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
     
     def post(self, request):
-        # if not request.GET.get("token"):
-        #     return Response({'error':'forbidden'}, status=status.HTTP_403_FORBIDDEN)
+        token = request.data.pop('token', None)
+        if not token or request.GET.get('token', '') != token or len(request.GET.get("token", '')) != 20:
+            return Response({'error':'forbidden'}, status=status.HTTP_403_FORBIDDEN)
         serializer = serializers.UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'success':'User created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        try:
+            user = User.objects.get(pk=request.GET.get('email'),
+            password=hashlib.md5(request.GET.get('password', '').encode()).hexdigest())
+            serializer = serializers.UserSerializer(user, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
         
 
 class PhotoView(ListCreateAPIView):

@@ -84,7 +84,6 @@ target/
 *.log
 *.pot
 *.pyc
-.pyc
 local_settings.py
 
 .env
@@ -92,5 +91,6 @@ db.sqlite3
 media
 django-env
 migrations
-**/__pycache__/**
+__pycache__
+videojs
 
