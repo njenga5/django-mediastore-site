@@ -1,0 +1,34 @@
+{% extends 'commonops/_base.html' %}
+{% block extrahead %}
+<title>Confirm Delete</title>
+{% endblock %}
+
+{% block content %}
+    <center>
+        <div class="alert alert-danger">
+            <p>The selected items will be <strong>deleted</strong>. <br>Please confirm.</p>
+            <div class="btn-group justify-content-between align-items-center">
+                <button class="btn btn-sm">
+                    <a href="{% url 'dashboard:delete-item' item item_id  %}" class="btn btn-danger">
+                        Confirm
+                    </a>
+                </button>
+                <button class="btn btnsm">
+                    {% if item == 'pic' %}
+                    <a href="{% url 'dashboard:profile'%}" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    {% elif item == 'vid' %}
+                    <a href="{% url 'player:play-video'%}" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    {% elif item == 'music' %}
+                    <a href="{% url 'player:play-audio'%}" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+    </center>
+{% endblock %}

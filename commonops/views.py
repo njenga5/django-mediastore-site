@@ -1,4 +1,5 @@
 import hashlib
+import binascii
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, reverse
 from django.views.decorators.debug import sensitive_post_parameters
@@ -27,8 +28,8 @@ def login(request,*args, **kwargs):
         if form.is_valid():
             try:
                 user = models.User.objects.get(email=form.cleaned_data.get('email'),
-                                               password=hashlib.md5(form.cleaned_data.get('password').encode())
-                                               .hexdigest())
+                                               password=binascii.hexlify(form.cleaned_data.get('password').encode())
+                                               .decode())
             except models.User.DoesNotExist:
                 return render(request, 'commonops/loginerror.html')
             try:
@@ -67,7 +68,7 @@ def change_password(request,*args, **kwargs):
                 user = models.User.objects.get(email=form.cleaned_data.get('email'))
             except models.User.DoesNotExist:
                 return render(request, 'commonops/changepasserror.html', {'form': form})
-            subject = 'Account Password Change Request- Intranet.'
+            subject = 'Account Password Change Request- Intranetsite.'
             message = f"""
                 You have requested to change your account's password.
                 Please click the link below to confirm.<br><br>
@@ -80,7 +81,7 @@ def change_password(request,*args, **kwargs):
                 This message was sent to {user.email} since you have an account with Intranet.
                 If you are not {user.email}, please ignore this email.<br><br><br>
                     Yours,<br>
-                    Intranet Team.
+                    Intranetsite Team.
             """
             send_mail(subject, message, 'no-reply@intranet.com', [user.email], html_message=message)
             request.session['email'] = user.email

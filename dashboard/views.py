@@ -7,21 +7,18 @@ from . import forms
 from . import models
 from commonops.models import User
 
-IMG_TYPES = ['bmp', 'dib', 'gif', 'tif', 'tiff', 'jfif', 'jpe', 'jpg', 'jpeg', 'pbm', 'pgm', 'ppm', 'pnm', 'png', 'apng', 'blp', 'bufr', 'cur', 'pcx', 'dcx', 'dds', 'ps', 'eps', 'fit', 'fits', 'fli', 'flc', 'ftc', 'ftu', 'gbr', 'grib', 'h5', 'hdf', 'jp2', 'j2k', 'jpc', 'jpf', 'jpx', 'j2c', 'icns', 'ico', 'im', 'iim', 'mpg', 'mpeg', 'mpo', 'msp', 'palm', 'pcd', 'pdf', 'pxr', 'psd', 'bw', 'rgb', 'rgba', 'sgi', 'ras', 'tga', 'icb', 'vda', 'vst', 'webp', 'wmf', 'emf', 'xbm', 'xpm']
 MUSIC_TYPES = ['mp3', 'ogg', 'm4a', 'wav', 'opus']
-VIDEO_TYPES = ['mp4', 'webm', '3gp', 'mkv']
+VIDEO_TYPES = ['mp4', 'webm',]
 MAX_SPACE = 524_288_000
-A = [22, 45]
-for i in A:
-    IMG_TYPES.insert(i, '\n')
+
 
 def dashboard_home(request):
     if 'user' in request.session:
         user_email = request.session['user']
         user = get_object_or_404(User, pk=user_email)
         pictures = user.photo_set.order_by('-upload_date')
-        musics = user.music_set.order_by('-upload_date')
-        videos = user.video_set.order_by('-upload_date')
+        musics = user.music_set.all()
+        videos = user.video_set.all()
         pic_size = sum((picture.picture.size for picture in pictures))
         music_size = sum((music.track.size for music in musics))
         vids_size = sum((video.video.size for video in videos))
@@ -52,78 +49,72 @@ def dashboard_home(request):
 
 def upload_photo(request):
     form = forms.PhotoForm()
-    if request.method == "GET":
-        if 'user' in request.session:
+    if 'user' in request.session:
+        if request.method == "GET":
             return render(request, 'dashboard/uploadphoto.html', {'form': form})
-        else:
-            return redirect('commonops:auth')
 
-    elif request.method == "POST":
-        form = forms.PhotoForm(request.POST, request.FILES)
-        if form.is_valid():
-            photo = form.save(commit=False)
-            if 'user' in request.session:
+        elif request.method == "POST":
+            form = forms.PhotoForm(request.POST, request.FILES)
+            if form.is_valid():
+                photo = form.save(commit=False)
                 photo.picture = request.FILES['picture']
                 photo.user = User.objects.get(pk=request.session['user'])
-            else:
-                return redirect('commonops:auth')
-            file_type = photo.picture.url.split('.')[-1]
-            file_type = file_type.lower()
-            if file_type not in IMG_TYPES:
-                return render(request, 'dashboard/errorphoto.html', {'allowed_types': IMG_TYPES})
-            photo.save()
-            messages.success(request, f"Photo {photo.picture.url.split('/')[-1]} uploaded successfully.")
-            return render(request, 'dashboard/uploadphoto.html', {'form': form, 'types': IMG_TYPES})
-        return render(request, 'dashboard/uploadphoto.html', {'form': form, 'types': IMG_TYPES})
+                file_type = photo.picture.url.split('.')[-1]
+                file_type = file_type.lower()
+                if file_type not in IMG_TYPES:
+                    return render(request, 'dashboard/errorphoto.html', {'allowed_types': IMG_TYPES})
+                photo.save()
+                messages.success(request, f"Photo {photo.picture.url.split('/')[-1]} uploaded successfully.")
+            return render(request, 'dashboard/uploadphoto.html', {'form': form})
+        return render(request, 'dashboard/bad_request.html')
+    return redirect('commonops:auth')
 
 
 def upload_music(request):
     form = forms.MusicForm()
-    if request.method == 'GET':
-        if 'user' in request.session:
+    if 'user' in request.session:
+        if request.method == 'GET':
             return render(request, 'dashboard/uploadmusic.html', {'form': form})
-        else:
-            return redirect('commonops:auth')
 
-    elif request.method == 'POST':
-        form = forms.MusicForm(request.POST, request.FILES)
-        if form.is_valid():
-            music = form.save(commit=False)
-            if 'user' in request.session:
+        elif request.method == 'POST':
+            form = forms.MusicForm(request.POST, request.FILES)
+            if form.is_valid():
+                music = form.save(commit=False)
                 music.user = User.objects.get(pk=request.session['user'])
-            else:
-                return redirect('commonops:auth')
-            music.track = request.FILES['track']
-            file_type = music.track.url.split('.')[-1]
-            file_type.lower()
-            if file_type not in MUSIC_TYPES:
-                return render(request, 'dashboard/errormusic.html', {'allowed_types': MUSIC_TYPES})
-            music.save()
-            return redirect('dashboard:profile')
-
+                music.track = request.FILES['track']
+                file_type = music.track.url.split('.')[-1]
+                file_type.lower()
+                if file_type not in MUSIC_TYPES:
+                    return render(request, 'dashboard/errormusic.html', {'allowed_types': MUSIC_TYPES})
+                music.save()
+            return render(request, 'dashboard/uploadmusic.html', {'form': form})
+        return render(request, 'dashboard/bad_request.html')
+    return redirect('commonops:auth')
+    
 
 def upload_video(request):
     form = forms.VideoForm()
-    if request.method == 'GET':
-        if 'user' in request.session:
+    if 'user' in request.session:
+        if request.method == 'GET':
             return render(request, 'dashboard/uploadvideo.html', {'form': form})
-        else:
-            return redirect('commonops:auth')
-    elif request.method == 'POST':
-        form = forms.VideoForm(request.POST, request.FILES)
-        if form.is_valid():
-            video = form.save(commit=False)
-            if 'user' in request.session:
+
+        elif request.method == 'POST':
+            form = forms.VideoForm(request.POST, request.FILES)
+            if form.is_valid():
+                video = form.save(commit=False)
                 video.user = User.objects.get(pk=request.session['user'])
-            else:
-                return redirect('commonops:auth')
-            video.video = request.FILES['video']
-            file_type = video.video.url.split('.')[-1]
-            file_type.lower()
-            if file_type not in VIDEO_TYPES:
-                return render(request, 'dashboard/errorvideo.html', {'allowed_types': VIDEO_TYPES})
-            video.save()
-            return redirect('dashboard:profile')
+                video.video = request.FILES['video']
+                file_type = video.video.url.split('.')[-1]
+                file_type.lower()
+                if file_type not in VIDEO_TYPES:
+                    return render(request, 'dashboard/errorvideo.html', {'allowed_types': VIDEO_TYPES})
+                video.save()
+            return render(request, 'dashboard/uploadvideo.html', {'form': form})
+        return render(request, 'dashboard/bad_request.html')
+    return redirect('commonops:auth')
+    
+        
+
 
 
 def profile_details(request):
@@ -136,7 +127,7 @@ def profile_details(request):
     else:
         return redirect('commonops:auth')
 
-# TODO: Refactor this function to reflect tags
+# TODO: Refactor this function to use tags
 def add_to_collection(request, item_id, source):
     if 'user' in request.session:
         if request.method == 'POST':
@@ -160,37 +151,60 @@ def add_to_collection(request, item_id, source):
                     f'Track {music.track.url.split("/")[-1]} added to collection: {data["collections"]}')
             else:
                 raise Http404
-        return HttpResponseBadRequest('<h1>Bad request (400)</h1>')
+        return render(request, 'dashboard/bad_request.html', {})
     return redirect('commonops:auth')
 
 
+def find_item(request, item, item_id):
+    if 'user' in request.session:
+        if request.method == 'GET':
+            context = {
+                'item':item,
+                'item_id':item_id,
+            }
+            return render(request, 'dashboard/confirm_delete.html', context)            
+        return render(request, 'dashboard/bad_request.html', {})
+    return redirect('commonops:auth')
+
 def delete_item(request, item, item_id):
-    if request.session.has_key('user'):
+    if 'user' in request.session:
         if request.method == 'GET':
             user = request.session['user']
             if item == 'pic':
                 photo = get_object_or_404(models.Photo, user_id=user, id=item_id)
                 path = photo.picture.path
+                norm_path = os.path.splitext(path)[0].split('\\')
                 os.unlink(path)
                 photo.delete()
-                return HttpResponse(f"Photo {photo.picture.url.split('/')[-1]} deleted.")
+                context = {
+                    'file':norm_path[-1],
+                    'type':'Picture',
+                }
             elif item == 'music':
                 music = get_object_or_404(models.Music, user_id=user, id=item_id)
                 path = music.track.path
+                norm_path = os.path.splitext(path)[0].split('\\')
                 os.unlink(path)
                 music.delete()
-                return HttpResponse(f"Music {music.track.url.split('/')[-1]} deleted.")
+                context = {
+                    'file':norm_path[-1],
+                    'type':'Track',
+                }
             elif item == 'vid':
                 video = get_object_or_404(models.Video, user_id=user, pk=item_id)
                 path = video.video.path
+                norm_path = os.path.splitext(path)[0].split('\\')
                 os.unlink(path)
                 video.delete()
-                return HttpResponse(f"Video {video.video.url.split('/')[-1]} deleted.")
+                context = {
+                    'file':norm_path[-1],
+                    'type':'Video',
+                }
             else:
                 raise Http404
-        return HttpResponseBadRequest('<h1>Bad Request (400)</h1>')
+            return render(request, 'dashboard/delete_success.html', context)
+        return render(request, 'dashboard/bad_request.html', {})
     return redirect('commonops:auth')
-
 
 def edit_photo_view(request, pk):
     if 'user' in request.session:

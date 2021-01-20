@@ -1,4 +1,4 @@
-{% extends 'commonops/_base.html' %} {% load static %} {% block extrahead %}<title>
+{% extends 'dashboard/album.html' %} {% load static %} {% block extrahead %}<title>
   Upload Music</title>{% endblock %} {% load crispy_forms_tags %} {% block content %}
 <a href="{% url 'dashboard:profile' %}">&lArr; Back</a>
 <center>
@@ -21,7 +21,7 @@
               <a class="btn btn-primary my-2">Upload</a>
             </button>
             <button type="button" id="done-btn" class="btn btn-sm">
-              <a class="btn btn-secondary">Done</a>
+              <a class="btn btn-secondary" href="{% url 'player:play-audio' %}">Done</a>
             </button>
           </div>
         </div>
@@ -29,7 +29,4 @@
     </div>
   </div>
 </center>
-<script>
-  document.getElementById("done-btn").onclick = () => (window.location.pathname = "/home/");
-</script>
 {% endblock %}

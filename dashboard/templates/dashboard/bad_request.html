@@ -1,0 +1,26 @@
+{% extends 'commonops/_base.html' %} {% block extrahead %}
+<title>Bad Request</title>
+{% endblock %} {% block content %}
+<center>
+  <div class="alert alert-warning">
+    <h2 class="h2 font-weight-normal">Bad Request</h2>
+    <strong>Error 400 </strong>(Bad Request) <br />
+    Redirecting in <strong id='timer'>0.05s</strong>
+  </div>
+  <script>
+    let counter = 5;
+    const redirect = () => {
+      window.location.pathname = '/home/'
+    }
+    const decrement = () => {
+      counter --;
+      document.getElementById('timer').textContent = `0.0${counter}s`
+      if(counter === 0){
+        clearInterval(num);
+        redirect()
+      }
+    }
+    const num = setInterval(decrement, 1000);
+  </script>
+</center>
+{% endblock %}

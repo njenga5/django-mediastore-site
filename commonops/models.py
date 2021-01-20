@@ -1,4 +1,5 @@
 import hashlib
+import binascii
 from django.db import models
 
 
@@ -13,7 +14,7 @@ class User(models.Model):
         db_table = "users"
  
     def save(self, *args, **kwargs): 
-        self.password = hashlib.md5(self.password.encode()).hexdigest()
+        self.password = binascii.hexlify(self.password.encode()).decode()
         super().save(*args, **kwargs)
 
     def __str__(self):

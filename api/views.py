@@ -1,4 +1,5 @@
 import hashlib
+import binascii
 from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,9 +14,11 @@ class UserView(APIView):
     def get(self, request):
         try:
             user = User.objects.get(pk=request.GET.get('email'),
-            password=hashlib.md5(request.GET.get('password', '').encode()).hexdigest())
+            password=binascii.hexlify(request.GET.get('password', '').encode()).decode())
             serializer = serializers.UserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            data = {**serializer.data}
+            data['password'] = binascii.unhexlify(data['password'].encode()).decode()
+            return Response(data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -32,11 +35,13 @@ class UserView(APIView):
     def put(self, request):
         try:
             user = User.objects.get(pk=request.GET.get('email'),
-            password=hashlib.md5(request.GET.get('password', '').encode()).hexdigest())
+            password=binascii.hexlify(request.GET.get('password', '').encode()).decode())
             serializer = serializers.UserSerializer(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+                data = {**serializer.data}
+                data['password'] = binascii.unhexlify(data['password'].encode()).decode()
+                return Response(data, status=status.HTTP_202_ACCEPTED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)

@@ -13,9 +13,10 @@ urlpatterns = [
     path('profile/details/', views.profile_details, name='profile-details'),
     path('home/', views.dashboard_home, name='profile'),
     path('logout/', views.logout, name='logout'),
-    path('edit/delete/<str:item>/<int:item_id>/', views.delete_item, name='delete-item'),
+    path('edit/find/<str:item>/<int:item_id>/', views.find_item, name='find-item'),
     path('collection/add/<int:item_id>/<str:source>/', views.add_to_collection, name='add-to-collection'),
     path('edit/photo/<int:pk>/', views.edit_photo_view, name='edit-photo'),
+    path('edit/delete/<str:item>/<int:item_id>/', views.delete_item, name='delete-item'),
 ]
 
 if settings.DEBUG:

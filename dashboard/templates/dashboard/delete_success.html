@@ -1,0 +1,38 @@
+{% extends 'commonops/_base.html' %} {% block extrahead %}
+<title>Deleted | {{ type }}</title>
+{% endblock %} {% block content %}
+<center>
+  <div class="alert alert-success">
+    <h2 class="h2 font-weight-normal">Deleted</h2>
+    <p id="msg">{{ type }}<strong> {{ file }} </strong>deleted successfully <br /></p>
+    Redirecting in <strong id="timer">0.10s</strong>
+  </div>
+  <script>
+    let counter = 10;
+    const redirect = (item) => {
+      switch (item) {
+        case "Picture":
+          window.location.pathname = "/home/";
+          break;
+        case "Track":
+          window.location.pathname = "/play/audio/";
+          break;
+        case "Video":
+          window.location.pathname = "/play/video/";
+          break;
+        default:
+          console.log("No matching path found");
+      }
+    };
+    const decrement = () => {
+      counter--;
+      document.getElementById("timer").textContent = `0.0${counter}s`;
+      if (counter === 0) {
+        clearInterval(num);
+        redirect(document.querySelector("#msg").textContent.split(" ")[0]);
+      }
+    };
+    const num = setInterval(decrement, 1000);
+  </script>
+</center>
+{% endblock %}
