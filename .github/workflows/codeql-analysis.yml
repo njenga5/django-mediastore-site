@@ -9,6 +9,8 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
+
+
 name: "CodeQL"
 
 on:
@@ -65,3 +67,5 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+    - name: Django Security Check
+      uses: victoriadrake/django-security-check@v1.1.0
