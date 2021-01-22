@@ -60,11 +60,11 @@ const parser = (src) => {
   autoState(playBtns, delBtns, counter);
 
   video.src(obj.sources[counter]);
-  title.innerText = obj.sources[counter].title;
+  title.innerText = `${obj.sources[counter].title.length > 29?obj.sources[counter].title.substring(0, 29)+'...':obj.sources[counter].title}`;
   playBtns.forEach((item, key) => {
     item.addEventListener("click", (event) => {
       video.src(obj.sources[key]);
-      title.innerText = obj.sources[key].title;
+      title.innerText = `${obj.sources[key].title.length > 29?obj.sources[key].title.substring(0, 29)+'...':obj.sources[key].title}`;
       counter = key;
       video.play();
       initialState(playBtns, delBtns);
@@ -79,13 +79,13 @@ const parser = (src) => {
       initialState(playBtns, delBtns);
       autoState(playBtns, delBtns, counter);
       video.src(obj.sources[counter]);
-      title.innerText = obj.sources[counter].title;
+      title.innerText = `${obj.sources[counter].title.length > 29?obj.sources[counter].title.substring(0, 29)+'...':obj.sources[counter].title}`;
       video.play();
     } else {
       initialState(playBtns, delBtns);
       autoState(playBtns, delBtns, counter);
       video.src(obj.sources[counter]);
-      title.innerText = obj.sources[counter].title;
+      title.innerText = `${obj.sources[counter].title.length > 29?obj.sources[counter].title.substring(0, 29)+'...':obj.sources[counter].title}`;
       video.play();
     }
   });
