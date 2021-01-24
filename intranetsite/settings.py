@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f$o$pa1_zbbo&u!4z0i=^ynol*q@7_7bw*vq#_z%%y7mpx3*ucq'
+SECRET_KEY = env.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -86,8 +86,8 @@ WSGI_APPLICATION = 'intranetsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql' if env.get('DATABASE_USER') else 'django.db.backends.sqlite3',
-        'NAME': 'intranetsite' if env.get('DATABASE_USER') else os.path.join(BASE_DIR, 'db.qlite3'),
+        'ENGINE': env.get('DATABASE_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': env.get('DATABASE_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
         'USER': env.get('DATABASE_USER', ''),
         'PASSWORD': env.get('DATABASE_PASSWORD', ''),
         'HOST': '',
