@@ -155,7 +155,7 @@ EMAIL_PORT = env.get('EMAIL_PORT', 8025)
 ADMINS = [('ADMIN', env.get('ADMIN_EMAIL', 'testadmin.intranetsite.com'))]
 MANAGERS = [('Manager', env.get('MANAGER_EMAIL', 'testmanager@intranetsite.com'))]
 EMAIL_USE_LOCALTIME = True
-EMAIL_USE_TLS = bool(int(env.get('EMAIL_USE_TLS')))
+EMAIL_USE_TLS = bool(int(env.get('EMAIL_USE_TLS', 0)))
 
 # Crispy forms options
 
@@ -173,6 +173,6 @@ DATABASES['default'].update(db_from_env)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Dropbox Storage
-DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DROPBOX_OAUTH2_TOKEN = env.get('DROPBOX_OAUTH2_TOKEN')
-DROPBOX_ROOT_PATH = '/media/'
+# DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+# DROPBOX_OAUTH2_TOKEN = env.get('DROPBOX_OAUTH2_TOKEN', 'hpvoPjKOlBUAAAAAAAAAAXjkt2c4e7zfXp_QDSy6KogTiYFBb1mbdwZAyxbaVUEM')
+# DROPBOX_ROOT_PATH = '/media/'
