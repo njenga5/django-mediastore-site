@@ -27,7 +27,7 @@ SECRET_KEY = env.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['django-mediastore-site.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['intranetsite.herokuapp.com', 'localhost']
 
 # Application definition
 
