@@ -83,7 +83,7 @@ def upload_music(request):
                 if file_type not in MUSIC_TYPES:
                     return render(request, 'dashboard/errormusic.html', {'allowed_types': MUSIC_TYPES})
                 music.save()
-                messages.success(request, f'Track {music.track.url.split('/')[-1]} uploaded successfully')
+                messages.success(request, f"Track {music.track.url.split('/')[-1]} uploaded successfully")
             return render(request, 'dashboard/uploadmusic.html', {'form': form})
         return render(request, 'dashboard/bad_request.html')
     return redirect('commonops:auth')
@@ -106,7 +106,7 @@ def upload_video(request):
                 if file_type not in VIDEO_TYPES:
                     return render(request, 'dashboard/errorvideo.html', {'allowed_types': VIDEO_TYPES})
                 video.save()
-                messages.success(request, f'Video {video.video.url.split('/')[-1]} uploaded successfully')
+                messages.success(request, f"Video {video.video.url.split('/')[-1]} uploaded successfully")
             return render(request, 'dashboard/uploadvideo.html', {'form': form})
         return render(request, 'dashboard/bad_request.html')
     return redirect('commonops:auth')
