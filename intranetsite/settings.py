@@ -146,7 +146,7 @@ SESSION_COOKIE_AGE = 3600
 
 # SMTP/Email options
 
-EMAIL_HOST = env.get('EMAIL_HOST', '')
+EMAIL_HOST = env.get('EMAIL_HOST', 'localhost')
 EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_HOST_USER = env.get('EMAIL_HOST_USER', '')
 EMAIL_PORT = 8025
