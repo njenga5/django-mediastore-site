@@ -150,10 +150,11 @@ SESSION_COOKIE_AGE = 3600
 EMAIL_HOST = env.get('EMAIL_HOST', 'localhost')
 EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_HOST_USER = env.get('EMAIL_HOST_USER', '')
-EMAIL_PORT = 8025
-ADMINS = [('TestAdmin', 'testadmin@intranetsite.com')]
-MANAGERS = [('TestManger', 'testmanager@intranetsite.com')]
+EMAIL_PORT = env.get('EMAIL_PORT', 8025)
+ADMINS = [('ADMIN', env.get('ADMIN_EMAIL', 'testadmin.intranetsite.com'))]
+MANAGERS = [('Manager', env.get('MANAGER_EMAIL', 'testmanager@intranetsite.com'))]
 EMAIL_USE_LOCALTIME = True
+EMAIL_USE_TLS = bool(int(env.get('EMAIL_USE_TLS')))
 
 # Crispy forms options
 
