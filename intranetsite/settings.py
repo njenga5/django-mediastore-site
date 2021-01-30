@@ -27,7 +27,7 @@ SECRET_KEY = env.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['intranetsite.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['intranetsite.herokuapp.com', 'localhost', '192.168.43.13']
 
 # Application definition
 
@@ -175,4 +175,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Dropbox Storage
 # DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 # DROPBOX_OAUTH2_TOKEN = env.get('DROPBOX_OAUTH2_TOKEN', 'hpvoPjKOlBUAAAAAAAAAAXjkt2c4e7zfXp_QDSy6KogTiYFBb1mbdwZAyxbaVUEM')
-# DROPBOX_ROOT_PATH = '/media/'
+# DROPBOX_ROOT_PATH = '/'
