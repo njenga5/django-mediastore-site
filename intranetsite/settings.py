@@ -22,12 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f$o$pa1_zbbo&u!4z0i=^ynol*q@7_7bw*vq#_z%%y7mpx3*ucq'
+SECRET_KEY = env.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['192.168.43.13', 'localhost']
+ALLOWED_HOSTS = ['intranetsite.herokuapp.com', 'localhost', '192.168.43.13']
 
 # Application definition
 
@@ -46,12 +46,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'crispy_forms',
     'taggit',
+    'storages',
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -85,8 +87,8 @@ WSGI_APPLICATION = 'intranetsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql' if env.get('DATABASE_USER') else 'django.db.backends.sqlite3',
-        'NAME': 'intranetsite' if env.get('DATABASE_USER') else os.path.join(BASE_DIR, 'db.qlite3'),
+        'ENGINE': env.get('DATABASE_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': env.get('DATABASE_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
         'USER': env.get('DATABASE_USER', ''),
         'PASSWORD': env.get('DATABASE_PASSWORD', ''),
         'HOST': '',
@@ -132,7 +134,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIR = [
-    os.path.join(BASE_DIR, 'static'),
+    #os.path.join(BASE_DIR, 'static'),
 ]
 
 # User uploaded media files (images, music, video)
@@ -146,14 +148,31 @@ SESSION_COOKIE_AGE = 3600
 
 # SMTP/Email options
 
-EMAIL_HOST = env.get('EMAIL_HOST', '')
+EMAIL_HOST = env.get('EMAIL_HOST', 'localhost')
 EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_HOST_USER = env.get('EMAIL_HOST_USER', '')
-EMAIL_PORT = 8025
-ADMINS = [('TestAdmin', 'testadmin@intranetsite.com')]
-MANAGERS = [('TestManger', 'testmanager@intranetsite.com')]
+EMAIL_PORT = env.get('EMAIL_PORT', 8025)
+ADMINS = [('ADMIN', env.get('ADMIN_EMAIL', 'testadmin.intranetsite.com'))]
+MANAGERS = [('Manager', env.get('MANAGER_EMAIL', 'testmanager@intranetsite.com'))]
 EMAIL_USE_LOCALTIME = True
+EMAIL_USE_TLS = bool(int(env.get('EMAIL_USE_TLS', 0)))
 
 # Crispy forms options
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Dropbox Storage
+# DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+# DROPBOX_OAUTH2_TOKEN = env.get('DROPBOX_OAUTH2_TOKEN', 'hpvoPjKOlBUAAAAAAAAAAXjkt2c4e7zfXp_QDSy6KogTiYFBb1mbdwZAyxbaVUEM')
+# DROPBOX_ROOT_PATH = '/'

@@ -58,7 +58,6 @@ class PhotoView(ListCreateAPIView):
 class VideoView(ListCreateAPIView):
     serializer_class = serializers.VideoSerializer
     def get_queryset(self):
-        print(self.request)
         queryset = models.Video.objects.filter(user_id=self.kwargs.get('email')).order_by("-upload_date")
         return queryset
     
