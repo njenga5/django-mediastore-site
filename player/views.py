@@ -26,8 +26,7 @@ def play_video_view(request, *args, **kwargs):
             context = {
                 'urls': {'sources':[{'src':obj.video.url,
                                     'type':'video/'+obj.video.url.split('.')[-1],
-                                    'title':obj.title,
-                                    'poster':obj.thumbnail.url} for obj in videos]},
+                                    'title':obj.title} for obj in videos]},
                 'videos': videos,
             }
             return render(request, 'player/videoplayer.html', context)
