@@ -31,4 +31,4 @@ def play_video_view(request, *args, **kwargs):
             }
             return render(request, 'player/videoplayer.html', context)
         return redirect('commonops:auth')
-    # TODO: Generate template for bad request
+    return render(request, 'player/forbidden.html')
