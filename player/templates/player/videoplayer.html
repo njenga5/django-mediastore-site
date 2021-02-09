@@ -1,52 +1,123 @@
 {% extends 'dashboard/album.html' %} {% load static %}{% block extrahead %}
 <link href="{% static 'player/css/video-js.css' %}" rel="stylesheet" />
-<link rel="stylesheet" href="{% static 'player/css/videostyle.css' %}" />
+<link rel="stylesheet" href="{% static 'player/css/videostyl.css' %}" />
 <script src="{% static 'player/js/video.js' %}"></script>
-{% comment %} <script src="https://vjs.zencdn.net/7.10.2/video.js"></script> {% endcomment %}
+{% comment %}
+<script src="https://vjs.zencdn.net/7.10.2/video.js"></script>
+{% endcomment %}
 <title>Video Player</title>
-  {{ urls|json_script:'vid-sources' }}
-{% endblock %} 
-{% block content %}
+{{ urls|json_script:'vid-sources' }} {% endblock %} {% comment %} {% block content %}
 <!-- Start content -->
-  <div class="container d-flex justify-content-between">
-    <div class="vid-container embed-responsive">
-      <div class="col-md-12">
-        <div class="card mb-4 shadow-sm">
-          <video id="video" class="video-js vjs-big-play-centered" width="708">
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser
-              that
-              <a href="https://videojs.com/html5-video-support/" target="_blank"
-                >supports HTML5 video</a
-              >
-            </p>
-          </video>
-          <div class="card-body">
-            <div class="d-flex justify-content-center align-items-center">
-              <div>
-                <h2 id="title" class="h2 font-weight-normal"></h2>
-              </div>
+<div class="container d-flex justify-content-between">
+  <div class="vid-container embed-responsive">
+    <div class="col-md-12">
+      <div class="card mb-4 shadow-sm">
+        <video id="video" class="video-js vjs-big-play-centered vjs-fluid">
+          <p class="vjs-no-js alert alert-warning">
+            To view this video please enable JavaScript, and consider upgrading to a web browser
+            that
+            <a href="https://videojs.com/html5-video-support/" target="_blank"
+              >supports HTML5 video</a
+            >
+          </p>
+        </video>
+        <div class="card-body">
+          <div class="d-flex justify-content-center align-items-center">
+            <div>
+              <h2 id="title" class="h2 font-weight-normal"></h2>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="block d-block">
+  </div>
+  <div class="block d-block">
+    {% for video in videos %}
+    <!-- Start card {{ forloop.counter }}-->
+    <div class="col-md-12">
+      <div class="card mb-4 shadow-sm">
+        <img
+          src="{{ video.thumbnail.url }}"
+          alt="thumbnail"
+          class="bd-placeholder-img card-img-top"
+          width="100%"
+          preserveAspectRatio="xMidYMid slice"
+          focusable="false"
+          role="img"
+          aria-label="Placeholder: Thumbnail"
+        />
+        <span class="text-center">{{ video.title|truncatechars:"30" }}</span>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm">
+                <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+              </button>
+              <button type="button" class="btn btn-sm play-btn" index="{{ forloop.counter0 }}">
+                <a class="btn btn-sm btn-outline-primary">Play</a>
+              </button>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm delete-btn">
+                <a
+                  href="{% url 'dashboard:find-item' 'vid' video.id %}"
+                  class="btn btn-sm btn-outline-danger"
+                  >Delete</a
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End card -->
+    {% endfor %}
+  </div>
+</div>
+<!-- End content -->
+<script src="{% static 'player/js/videoplayer.js' %}"></script>
+{% endblock %} {% endcomment %} {% block content %}
+
+<section class="align-items-center">
+  <div class="col-md-12">
+    <div class="card mb-4 shadow-sm">
+      <video id="video" class="video-js vjs-big-play-centered vjs-fluid" height="50rem">
+        <p class="vjs-no-js">
+          To view this video please enable JavaScript, and consider upgrading to a web browser
+          that
+          <a href="https://videojs.com/html5-video-support/" target="_blank"
+            >supports HTML5 video</a
+          >
+        </p>
+      </video>
+      <div class="card-body">
+        <div class="d-flex justify-content-center align-items-center">
+          <div>
+            <h2 id="title" class="h2 font-weight-normal"></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="album py-5 bg-dark">
+  <div class="container">
+    <div class="row">
       {% for video in videos %}
       <!-- Start card {{ forloop.counter }}-->
-      <div class="col-md-12">
+      <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
           <img
-            src="{{ video.thumbnail.url }}" 
+            src="{{ video.thumbnail.url }}"
             alt="thumbnail"
-            class="bd-placeholder-img card-img-top"
+            class="card-img-top"
             width="100%"
             height="225"
             preserveAspectRatio="xMidYMid slice"
             focusable="false"
             role="img"
-            aria-label="Placeholder: Thumbnail"
-          >
+          />
           <span class="text-center">{{ video.title|truncatechars:"30" }}</span>
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
@@ -55,15 +126,16 @@
                   <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
                 </button>
                 <button type="button" class="btn btn-sm play-btn" index="{{ forloop.counter0 }}">
-                  <a class="btn btn-sm btn-outline-primary" >Play</a
-                  >
+                  <a class="btn btn-sm btn-outline-primary">Play</a>
                 </button>
               </div>
               <div class="btn-group">
                 <button type="button" class="btn btn-sm delete-btn">
                   <a
                     href="{% url 'dashboard:find-item' 'vid' video.id %}"
-                    class="btn btn-sm btn-outline-danger">Delete</a>
+                    class="btn btn-sm btn-outline-danger"
+                    >Delete</a
+                  >
                 </button>
               </div>
             </div>
@@ -74,6 +146,6 @@
       {% endfor %}
     </div>
   </div>
-  <!-- End content -->
-  <script src="{% static 'player/js/videoplayer.js' %}"></script>
-{% endblock %}
+</div>
+<script src="{% static 'player/js/videoplayer.js' %}"></script>
+{% endblock content %}

@@ -5,20 +5,23 @@
   <div class="alert alert-success">
     <h2 class="h2 font-weight-normal">Deleted</h2>
     <p id="msg">{{ type }}<strong> {{ file }} </strong>deleted successfully <br /></p>
-    Redirecting in <strong id="timer">0.10s</strong>
+    <p>Redirecting in <strong id="timer">0.10s</strong></p>
+    <button type="button" class="btn btn-sm btn-primary">
+      <a href="{% url 'dashboard:profile' %}" class="btn">Back</a>
+    </button>
   </div>
   <script>
     let counter = 10;
     const redirect = (item) => {
       switch (item) {
         case "Picture":
-          window.location.pathname = "/home/";
+          window.location.pathname = "/home";
           break;
         case "Track":
-          window.location.pathname = "/play/audio/";
+          window.location.pathname = "/play/audio";
           break;
         case "Video":
-          window.location.pathname = "/play/video/";
+          window.location.pathname = "/play/video";
           break;
         default:
           console.log("No matching path found");

@@ -1,17 +1,36 @@
 {% extends 'commonops/_base.html' %} {% load static %} {% load humanize %}{% block extrahead %}
 <title>My Album | Intranet</title>
 <link href="{% static 'dashboard/css/album.css' %}" rel="stylesheet" />
-{% endblock %} {% block customnav %} {% include 'dashboard/customnavbar.html' %} {% endblock %}
+<link rel="stylesheet" href="{% static 'dashboard/css/normalize.min.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard/css/animate.min.css' %}">
+{% endblock %}
+
+{% block extrastyle %}
+.btn-close{
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: red;
+    background-color: aquamarine;
+  }
+{% comment %} #btn-close-modal{
+  display: flex;
+  justify-content: center;
+} {% endcomment %}
+{% endblock extrastyle %}
+
+{% block customnav %} {% include 'dashboard/customnavbar.html' %} {% endblock %}
 {%block content %}
 <div id="top"></div>
 <section class="text-center">
   <div class="container" id="description">
     <div class="btn-group d-flex justify-content-between align-items-center">
       <button type="button" class="btn btn-sm">
-        <a href="{% url 'player:play-audio' %}" class="btn btn-outline-success">Go to Music</a>
+        <a href="#animatedModal" id="demo01" class="btn btn-outline-primary">Go to Music</a>
       </button>
       <button type="button" class="btn btn-sm">
-        <a href="{% url 'player:play-video' %}" class="btn btn-outline-success">Go to Videos</a>
+        <a href="{% url 'player:play-video' %}" class="btn btn-outline-primary">Go to Videos</a>
       </button>
     </div>
     {% if title or description %}
@@ -35,22 +54,98 @@
   </div>
 </section>
 
+<!-- Start of the modal-->
+<div id="animatedModal">
+  <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID -->
+  
+  <div class="container bg-dark mt-1">
+      <!--Your modal content goes here-->
+      <div class="d-flex justify-content-between bg-light mb-1">
+        <div>
+          <h2 class="h2 font-weight-normal">Choose your preferred player</h2>
+        </div>
+        <div  id="btn-close-modal" class="close-animatedModal">
+          <button class="btn btn-close">&times;</button>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="bg-light mr-5">
+          <div class="card mb-4 shadow-sm">
+          <a
+            href="{% url 'player:play-audio' %}?player=alt-player"
+            class="btn btn-sm btn-primary"> 
+            <img
+              src="{% static 'dashboard/images/alt-audio-player(original).png' %}"
+              class="card-img-top"
+              width="100%"
+              height="500"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+              role="img"
+            />
+            </a>
+          <div class="card-body">
+            <p class="card-text">
+              Select this player
+            </p>
+            <div class="d-flex justify-content-center">
+              <div class="btn-group">
+                <a
+                  href="{% url 'player:play-audio' %}?player=alt-player"
+                  class="btn btn-sm btn-primary">Select Player</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-light">
+        <div class="card mb-4 shadow-sm">
+        <a
+          href="{% url 'player:play-audio' %}"
+          class="btn btn-sm btn-primary">
+          <img
+              src="{% static 'dashboard/images/audioplayer.png' %}"
+              class="card-img-top"
+              width="100%"
+              height="500"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+              role="img"
+          />
+        </a>
+        <div class="card-body">
+          <p class="card-text">
+            Select this player
+          </p>
+          <div class="d-flex justify-content-center">
+            <div class="btn-group">
+              <a
+                href="{% url 'player:play-audio' %}"
+                class="btn btn-sm btn-primary">Select Player</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</div>
+<!-- End of modal-->
+
 <div class="album py-5 bg-light">
   <div class="container">
     <div class="row">
       {% if pictures %} {% for picture in pictures %}
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
-          <a
-            ><img
+          <img
               src="{{ picture.picture.url }}"
               class="card-img-top"
-              width="100%"
-              height="225"
               preserveAspectRatio="xMidYMid slice"
               focusable="false"
               role="img"
-          /></a>
+          />
           <div class="card-body">
             <p class="card-text">
               {% if picture.description %} {{ picture.description }} {% endif %}
@@ -114,10 +209,10 @@
   </div>
 </footer>
 <script>
-    
+
   const element = document.querySelector("#describe-album");
   element.addEventListener("click",  () => {
-   
+
     const html =
       '<div><form method="post" id="desc-form" class="form">\
   {% csrf_token %}\
@@ -155,9 +250,14 @@
     const elem2 = document.querySelector("#description");
     elem2.innerHTML = html;
   document.getElementById('refresh').onclick = () =>{
-    window.location.pathname = '/home/'
+    window.location.pathname = '/home'
   }
   });
+</script>
+<script src="{% static 'dashboard/js/jquery.min.js' %}"></script>
+<script src="{% static 'dashboard/js/animatedModal.js' %}"></script>
+<script>
+  $("#demo01").animatedModal();
 </script>
 
 {% endblock %}
