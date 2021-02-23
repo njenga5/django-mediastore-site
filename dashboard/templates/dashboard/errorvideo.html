@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Video Upload Error</title>
-</head>
-<body>
+{% extends 'dashboard/album.html' %}
+{% block extrahead %}
+   <title>Video Upload Error</title>
+{% endblock extrahead %}
+
+{% block content %}
     <center>
-        <div>
-            <h1 style="color: aquamarine;">Upload Error</h1>
-            <hr style="border: 5px solid cadetblue;">
-            <p>Allowed file types are:</p>
-            <ul>
+        <div class="alert alert-warning">
+            <h1 class="font-weigth-normal">Upload Error</h1>
+            <hr />
+            <p style="text-decoration: underline;">Allowed file types are:</p>
+            <ul class="m-3">
                 {% for type in allowed_types %}
                     <li>{{ type }}</li>
                 {% endfor %}
             </ul>
         </div>
     </center>
-</body>
-</html>
+{% endblock content %}

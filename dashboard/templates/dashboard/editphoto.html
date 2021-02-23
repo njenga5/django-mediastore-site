@@ -1,11 +1,12 @@
-{% extends 'commonops/_base.html' %} {% load static %} {% block extrahead %}
+{% extends 'dashboard/album.html' %} {% load static %} {% block extrahead %}
 <title>Edit Photo | Intranesite</title>
-{% endblock %} {% block content %}
+{% endblock %} 
+{% block content %}
 <center>
   <h2 class="h2 mb-3 font-weight-normal">Edit Photo</h2>
   <hr />
-  <div class="col-md-4">
-    <div class="card mb-4 shadow-sm">
+  <div class="col-md-4 fan p-1">
+    <div class="card mb-4 shadow-sm fan">
       <img
         src="{{ photo.picture.url }}"
         class="card-img-top"

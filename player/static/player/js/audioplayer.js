@@ -80,12 +80,13 @@ function togglePlaylist() {
 }
 
 function addList(playlist) {
-  playlist.forEach((file) => {
+  playlist.forEach((file, index) => {
     fileUrl = file.split("/")[3].split(".")[0];
     if (fileUrl != "") {
       parent = document.getElementById("list");
       listItem = document.createElement("div");
       listItem.setAttribute("class", "list-item");
+      listItem.setAttribute("index", index);
 
       wrapper = document.createElement("div");
       wrapper.setAttribute("class", "wrap-text");
@@ -148,6 +149,7 @@ song.addEventListener("ended", function () {
   playpause();
 });
 
+
 var input = document.getElementById("sourceUrl");
 input.addEventListener("keyup", function (event) {
   if (event.keyCode === 13) {
@@ -160,7 +162,6 @@ const sources = document.getElementById("audio-src").textContent;
 const parser = (sources) => {
   const obj = JSON.parse(sources);
   const cleanUrl = obj.audio.map((url) => url.audio);
-  console.log(cleanUrl);
   playlist = cleanUrl;
   addList(playlist);
 };

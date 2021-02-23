@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from commonops.models import User
+from commonops.models import CustomUser as User
 from dashboard import models
 
 

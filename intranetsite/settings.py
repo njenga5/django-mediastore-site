@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'crispy_forms',
     'taggit',
     'storages',
+    'corsheaders',
 
 ]
 
 MIDDLEWARE = [
+     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -176,3 +178,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 # DROPBOX_OAUTH2_TOKEN = env.get('DROPBOX_OAUTH2_TOKEN', 'hpvoPjKOlBUAAAAAAAAAAXjkt2c4e7zfXp_QDSy6KogTiYFBb1mbdwZAyxbaVUEM')
 # DROPBOX_ROOT_PATH = '/'
+
+AUTH_USER_MODEL = 'commonops.CustomUser'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]

@@ -41,11 +41,33 @@
     </style>
   </head>
   <body>
-    {% block customnav %}
-    {% endblock %}
+    {% block customnav %} {% include 'dashboard/customnavbar.html' %} {% endblock %}
 
     <main role="main" class="container">
       {% block content %}{% endblock %}
     </main>
+    <script>
+      const fans = document.querySelectorAll('.fan')
+      fans.forEach(fan => {
+          fan.classList.remove('bg-light')
+          fan.classList.add(...['bg-dark', 'rounded'])
+      });
+    </script>
+    <script>
+      const classNames = ['bg-dark', 'text-white']
+      try{
+        const inputFields = document.querySelectorAll('.form-control')
+        inputFields.forEach(field =>{
+          field.classList.add(...classNames)
+          if (field.localName === 'input'){
+            field.classList.add('text-center')
+          }
+        })
+        const textArea = document.querySelector('textarea')
+        textArea.setAttribute('rows', "5")
+      }catch(error){
+
+      }
+    </script>
   </body>
 </html>

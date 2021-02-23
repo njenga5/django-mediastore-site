@@ -20,8 +20,8 @@ from commonops.views import home_view
 urlpatterns = [
     path('', home_view),
     path('admin/', admin.site.urls),
-    path('common/', include('commonops.urls')),
+    path('accounts/', include('commonops.urls')),
     path('', include('dashboard.urls')),
-    path('', include('player.urls')),
+    path('player/', include('player.urls')),
     path('api/', include('api.urls'))
     ]

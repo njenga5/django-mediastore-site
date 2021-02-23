@@ -1,10 +1,12 @@
 {% extends 'dashboard/album.html' %} {% load static %} {% block extrahead %}<title>
   Upload Photo</title>{% endblock %} {% load crispy_forms_tags %} {% block content %}
-<a href="{% url 'dashboard:profile' %}">&lArr; Back</a>
+{% comment %} <a href="{% url 'dashboard:profile' %}">&lArr; Back</a> {% endcomment %}
 <center>
-  <div class="col-md-6">
+  <div class="col-md-6 fan">
     <div class="card-body">
+    {% block title %}
       <h1 class="h2 font-weight-normal">Upload a Photo</h1>
+    {% endblock title %}
       <hr />
       {% if messages %}
       <ul class="messages alert alert-success">
@@ -17,12 +19,14 @@
         {% csrf_token %} {{ form|crispy }}
         <div class="d-flex justify-content-between align-items-center">
           <div class="btn-group">
+          {% block buttons %}
             <button type="submit" class="btn btn-sm">
               <a class="btn btn-primary my-2">Upload</a>
             </button>
             <button type="button" id="done-btn" class="btn btn-sm">
               <a class="btn btn-secondary" href="{% url 'dashboard:profile' %}">Done</a>
             </button>
+          {% endblock buttons %}
           </div>
         </div>
       </form>

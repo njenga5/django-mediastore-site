@@ -1,17 +1,17 @@
 * {
   box-sizing: border-box;
 }
-html {
+body {
   background: #000000;
 }
 html,
 body,
-.container {
+.container-2 {
   height: 100%;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
-.container {
+.container-2 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -134,7 +134,7 @@ body,
 }
 .text {
   color: #ffffff;
-  display: block;
+  /* display: block; */
 }
 button {
   background: #000000;
@@ -170,14 +170,18 @@ button:active {
 #seek::-webkit-slider-thumb,
 #volume::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 20px;
+  width: 15px;
   height: 20px;
   border: 1px solid #000000;
   border-radius: 10px;
   background: #ffffff;
 }
-#seek {
+.seekbar {
   display: block;
+  width: 230px;
+  margin-top: 12px;
+}
+#seek{
   width: 230px;
 }
 .scrollbar::-webkit-scrollbar {
@@ -208,4 +212,12 @@ button:active {
   100% {
     background-position: 0 0;
   }
+}
+
+.volume_controls{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 7px;
 }

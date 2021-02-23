@@ -15,9 +15,11 @@ class MusicForm(forms.ModelForm):
     class Meta:
         model = models.Music
         fields = [
+                'artist',
                 'title',
                 'description',
                 'track',
+                'art'
         ]
 
 
@@ -25,9 +27,11 @@ class VideoForm(forms.ModelForm):
     class Meta:
         model = models.Video
         fields = [
+                'artist',
                 'title',
                 'description',
                 'video',
+                'thumbnail'
         ]
 
 

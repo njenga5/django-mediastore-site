@@ -1,18 +1,22 @@
 from django import forms
-from .models import User
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import CustomUser
 
 
-class SignUpForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
+class CustomUserCreationForm(UserCreationForm):
 
-    class Meta:
-        model = User
-        fields = [
-            'full_name',
-            'phone_number',
-            'email',
-        ]
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+        fields = ('full_name', 'email', 'phone_number')
+
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta(UserChangeForm.Meta):
+        model = CustomUser
+        fields = ('full_name', 'email', 'phone_number')
+
+
 
 
 class LoginForm(forms.Form):

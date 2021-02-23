@@ -1,6 +1,5 @@
-import hashlib
-import binascii
 from django.core.mail import send_mail
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect, reverse
 from django.views.decorators.debug import sensitive_post_parameters
 from django.conf import settings
@@ -12,14 +11,14 @@ def home_view(request):
 
 
 @sensitive_post_parameters()
-def login(request,*args, **kwargs):
+def login(request):
     form = forms.LoginForm()
     if request.method == 'GET':
         if 'user' in request.session:
             try:
-                models.User.objects.get(email=request.session['user'])
+                models.CustomUser.objects.get(email=request.session['user'])
                 return redirect('dashboard:profile')
-            except models.User.DoesNotExist:
+            except models.CustomUser.DoesNotExist:
                 del request.session['user']
                 return render(request, 'commonops/login.html', {'form': form})
 
@@ -27,10 +26,10 @@ def login(request,*args, **kwargs):
         form = forms.LoginForm(request.POST)
         if form.is_valid():
             try:
-                user = models.User.objects.get(email=form.cleaned_data.get('email'),
-                                               password=binascii.hexlify(form.cleaned_data.get('password').encode())
-                                               .decode())
-            except models.User.DoesNotExist:
+                user = models.CustomUser.objects.get(email=form.cleaned_data.get('email'))
+                if not check_password(form.cleaned_data.get('password'), user.password):
+                    return render(request, 'commonops/loginerror.html')
+            except models.CustomUser.DoesNotExist:
                 return render(request, 'commonops/loginerror.html')
             try:
                 del request.session['user']
@@ -42,22 +41,22 @@ def login(request,*args, **kwargs):
 
 
 @sensitive_post_parameters('password', 'confirm_password', 'email')
-def sign_up(request,*args, **kwargs):
-    form = forms.SignUpForm()
+def sign_up(request):
+    form = forms.CustomUserCreationForm()
     if request.method == 'POST':
-        form = forms.SignUpForm(request.POST)
+        form = forms.CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            if form.cleaned_data.get('password') != form.cleaned_data.get('confirm_password'):
+            if form.cleaned_data.get('password1') != form.cleaned_data.get('password2'):
                 return render(request, 'commonops/signuperror.html', {'error': 'Passwords do not match.'})
-            user.password = form.cleaned_data.get('password')
+            # user.password = form.cleaned_data.get('password1')
             user.save()
             return redirect('commonops:auth')
         return render(request, 'commonops/signuperror.html', {'errors': form.errors})
     return render(request, 'commonops/signup.html', {'form': form})
 
 
-def change_password(request,*args, **kwargs):
+def change_password(request):
     form = forms.ChangePassForm()
     if request.method == "GET":
         return render(request, 'commonops/changepass.html', {'form': form})
@@ -65,8 +64,8 @@ def change_password(request,*args, **kwargs):
         form = forms.ChangePassForm(request.POST)
         if form.is_valid():
             try:
-                user = models.User.objects.get(email=form.cleaned_data.get('email'))
-            except models.User.DoesNotExist:
+                user = models.CustomUser.objects.get(email=form.cleaned_data.get('email'))
+            except models.CustomUser.DoesNotExist:
                 return render(request, 'commonops/changepasserror.html', {'form': form})
             subject = 'Account Password Change Request- Intranetsite.'
             message = f"""
@@ -89,10 +88,10 @@ def change_password(request,*args, **kwargs):
         return render(request, 'commonops/changepasserror.html', {'form': form, 'errors': form.errors})
 
 
-def pricing_view(request,*args, **kwargs):
+def pricing_view(request):
     return render(request, 'commonops/pricing.html', {})
 
 
-def email_sent(request,*args, **kwargs):
+def email_sent(request):
     email = request.session.get('email')
     return render(request, 'commonops/emailsent.html', {'user': email})

@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.utils import timezone
 from . import forms
 from . import models
-from commonops.models import User
+from commonops.models import CustomUser as User
 
 MUSIC_TYPES = ['mp3', 'ogg', 'm4a', 'wav', 'opus']
 VIDEO_TYPES = ['mp4', 'webm',]
@@ -15,7 +15,7 @@ MAX_SPACE = 524_288_000
 def dashboard_home(request):
     if 'user' in request.session:
         user_email = request.session['user']
-        user = get_object_or_404(User, pk=user_email)
+        user = get_object_or_404(User, email=user_email)
         pictures = user.photo_set.order_by('-upload_date')
         musics = user.music_set.all()
         videos = user.video_set.all()
@@ -58,7 +58,7 @@ def upload_photo(request):
             if form.is_valid():
                 photo = form.save(commit=False)
                 photo.picture = request.FILES['picture']
-                photo.user = User.objects.get(pk=request.session['user'])
+                photo.user = User.objects.get(email=request.session['user'])
                 photo.save()
                 messages.success(request, f"Photo {photo.picture.url.split('/')[-1]} uploaded successfully.")
             return render(request, 'dashboard/uploadphoto.html', {'form': form})
@@ -76,7 +76,7 @@ def upload_music(request):
             form = forms.MusicForm(request.POST, request.FILES)
             if form.is_valid():
                 music = form.save(commit=False)
-                music.user = User.objects.get(pk=request.session['user'])
+                music.user = User.objects.get(email=request.session['user'])
                 music.track = request.FILES['track']
                 file_type = music.track.url.split('.')[-1]
                 file_type.lower()
@@ -99,7 +99,7 @@ def upload_video(request):
             form = forms.VideoForm(request.POST, request.FILES)
             if form.is_valid():
                 video = form.save(commit=False)
-                video.user = User.objects.get(pk=request.session['user'])
+                video.user = User.objects.get(email=request.session['user'])
                 video.video = request.FILES['video']
                 file_type = video.video.url.split('.')[-1]
                 file_type.lower()
@@ -110,14 +110,11 @@ def upload_video(request):
             return render(request, 'dashboard/uploadvideo.html', {'form': form})
         return render(request, 'dashboard/bad_request.html')
     return redirect('commonops:auth')
-    
-        
-
 
 
 def profile_details(request):
     if request.session.has_key('user'):
-        user = get_object_or_404(User, pk=request.session['user'])
+        user = get_object_or_404(User, email=request.session['user'])
         next_birthday = timezone.datetime(timezone.now().year, user.date_of_birth.month, user.date_of_birth.day)
         if timezone.make_aware(next_birthday) <= timezone.now():
             next_birthday = timezone.datetime(timezone.now().year + 1, user.date_of_birth.month, user.date_of_birth.day)
@@ -169,30 +166,39 @@ def delete_item(request, item, item_id):
         if request.method == 'GET':
             user = request.session['user']
             if item == 'pic':
-                photo = get_object_or_404(models.Photo, user_id=user, id=item_id)
+                photo = get_object_or_404(models.Photo, user__email=user, id=item_id)
                 path = photo.picture.path
                 norm_path = os.path.splitext(path)[0].split('\\')
-                os.unlink(path)
+                try:
+                    os.unlink(path)
+                except NotImplementedError:
+                    os.remove(path)
                 photo.delete()
                 context = {
                     'file':norm_path[-1],
                     'type':'Picture',
                 }
             elif item == 'music':
-                music = get_object_or_404(models.Music, user_id=user, id=item_id)
+                music = get_object_or_404(models.Music, user__email=user, id=item_id)
                 path = music.track.path
                 norm_path = os.path.splitext(path)[0].split('\\')
-                os.unlink(path)
+                try:
+                    os.unlink(path)
+                except NotImplementedError:
+                    os.remove(path)
                 music.delete()
                 context = {
                     'file':norm_path[-1],
                     'type':'Track',
                 }
             elif item == 'vid':
-                video = get_object_or_404(models.Video, user_id=user, pk=item_id)
+                video = get_object_or_404(models.Video, user__email=user, pk=item_id)
                 path = video.video.path
                 norm_path = os.path.splitext(path)[0].split('\\')
-                os.unlink(path)
+                try:
+                    os.unlink(path)
+                except NotImplementedError:
+                    os.remove(path)
                 video.delete()
                 context = {
                     'file':norm_path[-1],
@@ -208,7 +214,7 @@ def edit_photo_view(request, pk):
     if 'user' in request.session:
         if request.method == 'GET':
             user = request.session.get('user')
-            photo = get_object_or_404(models.Photo, user_id=user, id=pk)
+            photo = get_object_or_404(models.Photo, user__email=user, id=pk)
             collections = photo.tags.all()
             context = {
                 'photo': photo,

@@ -16,7 +16,7 @@ let main = {
 	thumbnail:_(".player .main img"),
 	seekbar:_(".player .main input"),
 	songname:_(".player .main .details h2"),
-	//artistname:_(".player .main .details p"),
+	artistname:_(".player .main .details p"),
 	prevControl:_(".player .main .controls .prev-control"),
 	playPauseControl:_(".player .main .controls .play-pause-control"),
 	nextControl:_(".player .main .controls .next-control"),
@@ -35,7 +35,7 @@ toggleSongList.addEventListener("click", ()=>{
 	player.classList.toggle("activeSongList");
 });
 
-_(".player .player-list .list").innerHTML = (songList.map((song,songIndex)=>{
+_(".player .player-list .list").innerHTML = (songList.map((song, songIndex)=>{
 	return `
 		<div class="item" songIndex="${songIndex}">
 			<div class="thumbnail">
@@ -43,11 +43,15 @@ _(".player .player-list .list").innerHTML = (songList.map((song,songIndex)=>{
 			</div>
 			<div class="details">
 				<h2>${song.songname}</h2>
-			 	<!--<p>${song.artistname}</p>-->
+			 	<p>${song.artistname}</p>
 			</div>
 			<div class="download-btn">
 				<button>
-					<i class="fa fa-download"></i>
+					<a href="${song.audio}" download="${song.songname}">
+					<i class="fa fa-download"></i></a>
+				</button>
+				<button>
+					<a href="/edit/find/music/${song.id}"><i class="fa fa-trash"></i></a>
 				</button>
 			</div>
 		</div>
@@ -59,7 +63,7 @@ for(let i=0;i<songListItems.length;i++){
 	songListItems[i].addEventListener("click",() => {
 		currentSongIndex = parseInt(songListItems[i].getAttribute("songIndex"));
 		loadSong(currentSongIndex);
-		player.classList.remove("activeSongList");
+		// player.classList.remove("activeSongList");
 	});
 }
 
@@ -80,28 +84,34 @@ const calcTime = (timeNow, node) =>{
 }
 
 const loadSong = (songIndex) => {
-	let song = songList[songIndex];
-	main.thumbnail.setAttribute("src", song.thumbnail);
-	document.body.style.background = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url("${song.thumbnail}") center no-repeat`;
-	document.body.style.backgroundSize = "cover";
-	main.songname.innerText = song.songname;
-	//main.artistname.innerText = song.artistname;
-	main.audio.setAttribute("src", song.audio);
-	main.seekbar.setAttribute("value",0);
-	main.seekbar.setAttribute("min",0);
-	main.seekbar.setAttribute("max",0);
-	main.audio.addEventListener("canplay",() =>{
-		if(!main.audio.paused){
-            main.playPauseControl.children[0].classList.add("fa-pause")
-		}
-        let timeNow2 = main.audio.duration;
-		main.seekbar.setAttribute("max",parseInt(timeNow2));
-		calcTime(timeNow2, main.duration);
-		main.currTime.innerText = "00:00";
-		main.audio.onended = () => {
-			main.nextControl.click();
-		}
-	})
+	if (songList.length > 0){
+		let song = songList[songIndex];
+		main.thumbnail.setAttribute("src", song.thumbnail);
+		document.body.style.background = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url("${song.thumbnail}") center no-repeat`;
+		document.body.style.backgroundSize = "cover";
+		main.songname.innerText = song.songname;
+		main.artistname.innerText = song.artistname;
+		main.audio.setAttribute("src", song.audio);
+		main.seekbar.setAttribute("value",0);
+		main.seekbar.setAttribute("min",0);
+		main.seekbar.setAttribute("max",0);
+		main.currTime.innerText = "__:__";
+		main.audio.addEventListener("canplay",() =>{
+			main.audio.play()
+			if(!main.audio.paused){
+				main.playPauseControl.children[0].classList.add("fa-pause")
+			}
+			main.currTime.innerText = "00:00";
+			let timeNow2 = main.audio.duration;
+			main.seekbar.setAttribute("max",parseInt(timeNow2));
+			calcTime(timeNow2, main.duration);
+			main.audio.onended = () => {
+				main.nextControl.click();
+			}
+		})
+	}else{
+		main.thumbnail.setAttribute("src", "/static/player/images/default-art.jpg");
+	}
 }
 setInterval(() =>{
     let timeNow1 = main.audio.currentTime;

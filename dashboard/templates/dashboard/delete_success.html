@@ -1,6 +1,8 @@
-{% extends 'commonops/_base.html' %} {% block extrahead %}
+{% extends 'dashboard/album.html' %} {% block extrahead %}
 <title>Deleted | {{ type }}</title>
-{% endblock %} {% block content %}
+{% endblock %} 
+{% block customnavbar %}{% endblock customnavbar %}
+{% block content %}
 <center>
   <div class="alert alert-success">
     <h2 class="h2 font-weight-normal">Deleted</h2>
@@ -9,22 +11,23 @@
     <button type="button" class="btn btn-sm btn-primary">
       <a href="{% url 'dashboard:profile' %}" class="btn">Back</a>
     </button>
+    <a id="player-det" href="{% url 'player:play-audio' %}?player={{ request.session.player }}"></a>
   </div>
   <script>
     let counter = 10;
     const redirect = (item) => {
       switch (item) {
         case "Picture":
-          window.location.pathname = "/home";
+          window.location.pathname = "{% url 'dashboard:profile' %}";
           break;
         case "Track":
-          window.location.pathname = "/play/audio";
+          document.getElementById('player-det').click()
           break;
         case "Video":
-          window.location.pathname = "/play/video";
+          window.location.pathname = "{% url 'player:play-video' %}";
           break;
         default:
-          console.log("No matching path found");
+          console.error("No matching path found");
       }
     };
     const decrement = () => {

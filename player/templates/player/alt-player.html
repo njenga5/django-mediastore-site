@@ -1,37 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-	{% load static %}
-<head>
-	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="robots" content="index/follow">
-	<title>Audio Player</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'player/css/all.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'player/css/alt-player-style.css' %}">
-</head>
-<body>
-	{{ musics|json_script:'audio-src' }}
+{% extends 'commonops/_base.html' %}
+{% load static %}
+{% block extrahead %}
+	<title>Music Player</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'player/css/all.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'player/css/alt-player-style.css' %}" />
+{% endblock extrahead %} 
+{% block content %} 
+{{ musics|json_script:'audio-src' }}
 	<div class="player">
 		<div class="main">
 			<audio></audio>
 			<div class="thumbnail">
-				<img src="">
+				<img src="" />
 			</div>
 			<div class="seekbar">
-				<input type="range">
-                <div>
-                    <span id="currTime"></span>
-                    <span id="duration"></span>
-                </div>
+				<input type="range" />
+				<div>
+					<span id="currTime"></span>
+					<span id="duration"></span>
+				</div>
 			</div>
 			<div class="details">
 				<h2></h2>
 				<p></p>
 			</div>
 			<div class="controls">
-                <!-- <button>
-                    <i class="fa fa-random"></i>
-                </button> -->
+			<!-- <button>
+					<i class="fa fa-random"></i>
+				</button> -->
 				<button class="prev-control">
 					<i class="fa fa-backward"></i>
 				</button>
@@ -42,21 +38,19 @@
 				<button class="next-control">
 					<i class="fa fa-forward"></i>
 				</button>
-                <!-- <button>
-                    <i class="fa fa-download"></i>
-                </button> -->
+				<!-- <button>
+						<i class="fa fa-download"></i>
+					</button> -->
 			</div>
 		</div>
 		<div class="player-list">
 			<div class="toggle-list">
 				<i class="fa fa-angle-up"></i>
-				<!-- <i class="fa fa-angle-down"></i> -->
+			<!-- <i class="fa fa-angle-down"></i> -->
 			</div>
-			<div class="list">
-			</div>
+			<div class="list"></div>
 		</div>
 	</div>
 	<script type="text/javascript" src="{% static 'player/js/all.js' %}"></script>
 	<script type="text/javascript" src="{% static 'player/js/alt-player.js' %}"></script>
-</body>
-</html>
+{% endblock content %}

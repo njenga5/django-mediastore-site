@@ -5,7 +5,7 @@
 }
 body {
 	height: 100vh;
-	font-family: "Raleway";
+	/* font-family: "Raleway"; */
 }
 .player {
 	position: absolute;
@@ -13,7 +13,7 @@ body {
 	left: 50%;
 	transform: translate(-50%,-50%);
 	width: 350px;
-	height: 510px;
+	height: 550px;
 	overflow: hidden;
 	border-radius: 7px;
 }
@@ -60,15 +60,15 @@ body {
 }
 .player .main .details {
 	text-align: center;
-	padding: 5px 0px;
+	padding: 0px 0px;
 }
 .player .main .details h2 {
-	font-size: 18px;
+	font-size: 20px;
 	color:#eee;
-	margin-bottom: 8px;
+	margin-bottom: 2px;
 }
 .player .main .details p {
-	font-size: 15px;
+	font-size: 16px;
 	color: #aaa;
 }
 .player .main .controls {
@@ -162,7 +162,9 @@ body {
 	font-size: 15px;
 }
 .player .list .item .download-btn{
-	margin: 10px 30px;
+	display: flex;
+	justify-content: space-between;
+	margin: 10px 3px 10px 3px;
 }
 .player .player-list::-webkit-scrollbar {
 	width: 2px;

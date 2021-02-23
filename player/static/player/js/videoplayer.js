@@ -16,6 +16,7 @@ const video = videojs("video", {
 });
 
 const title = document.getElementById("title");
+const artist = document.getElementById("artist");
 const playBtns = document.querySelectorAll(".play-btn");
 
 const initialState = (playBtns) => {
@@ -48,6 +49,7 @@ const autoState = (playBtns, counter) => {
 const parser = (src) => {
   const obj = JSON.parse(src);
   var counter = 0;
+
   
   initialState(playBtns);
   autoState(playBtns, counter);
@@ -55,11 +57,13 @@ const parser = (src) => {
   video.src(obj.sources[counter]);
   video.poster(obj.sources[counter].poster)
   title.innerText = `${obj.sources[counter].title.length > 29?obj.sources[counter].title.substring(0, 29)+'...':obj.sources[counter].title}`;
-  video.play()
+  artist.innerText = `${obj.sources[counter].artist.length > 29?obj.sources[counter].artist.substring(0, 29)+'...':obj.sources[counter].artist}`;
+  // video.play()
   playBtns.forEach((item, key) => {
     item.addEventListener("click", (event) => {
       video.src(obj.sources[key]);
       title.innerText = `${obj.sources[key].title.length > 29?obj.sources[key].title.substring(0, 29)+'...':obj.sources[key].title}`;
+      artist.innerText = `${obj.sources[key].artist.length > 29?obj.sources[key].artist.substring(0, 29)+'...':obj.sources[key].artist}`;
       counter = key;
       video.play();
       initialState(playBtns, );
@@ -76,6 +80,7 @@ const parser = (src) => {
     autoState(playBtns, counter);
     video.src(obj.sources[counter]);
     title.innerText = `${obj.sources[counter].title.length > 29?obj.sources[counter].title.substring(0, 29)+'...':obj.sources[counter].title}`;
+    artist.innerText = `${obj.sources[counter].artist.length > 29?obj.sources[counter].artist.substring(0, 29)+'...':obj.sources[counter].artist}`;
     video.play();
   });
 };

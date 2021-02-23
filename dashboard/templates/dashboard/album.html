@@ -7,7 +7,9 @@
 
 {% block extrastyle %}
 .btn-close{
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     cursor: pointer;
     border: none;
     outline: none;
@@ -18,21 +20,26 @@
   display: flex;
   justify-content: center;
 } {% endcomment %}
+  .img{
+    max-height: 253.5px;
+  }
 {% endblock extrastyle %}
 
-{% block customnav %} {% include 'dashboard/customnavbar.html' %} {% endblock %}
+
 {%block content %}
 <div id="top"></div>
-<section class="text-center">
-  <div class="container" id="description">
-    <div class="btn-group d-flex justify-content-between align-items-center">
-      <button type="button" class="btn btn-sm">
-        <a href="#animatedModal" id="demo01" class="btn btn-outline-primary">Go to Music</a>
-      </button>
-      <button type="button" class="btn btn-sm">
-        <a href="{% url 'player:play-video' %}" class="btn btn-outline-primary">Go to Videos</a>
-      </button>
-    </div>
+<section class="text-center fan">
+  <div class="container mb-3" id="description">
+    <div class="px-3 py-2">
+      <div class="btn-group d-flex justify-content-between align-items-center">
+        <button type="button" class="btn btn-sm">
+          <a href="#animatedModal" id="demo01" class="btn btn-outline-primary">Go to Music</a>
+        </button>
+        <button type="button" class="btn btn-sm">
+          <a href="{% url 'player:play-video' %}" class="btn btn-outline-primary">Go to Videos</a>
+        </button>
+      </div>
+    
     {% if title or description %}
     <h1 class="h2 font-weight-normal">{{ title }}</h1>
     <p class="lead text-muted">
@@ -42,7 +49,7 @@
       <a class="btn btn-primary my-2" id="describe-album">Edit Album Intro</a>
     </p>
     {% else%}
-    <h1>My Album</h1>
+    <h1 class="h2 font-weight-normal">My Album</h1>
     <p class="lead text-muted">
       Something short and leading about the collection below—its contents, the creator, etc. Make it
       short and sweet, but not too short.
@@ -51,14 +58,15 @@
       <a class="btn btn-primary my-2" id="describe-album">Add Album Intro</a>
     </p>
     {% endif %}
+    </div>
   </div>
 </section>
 
 <!-- Start of the modal-->
-<div id="animatedModal">
+<div id="animatedModal" class="fan">
   <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID -->
   
-  <div class="container bg-dark mt-1">
+  <div class="container mt-1">
       <!--Your modal content goes here-->
       <div class="d-flex justify-content-between bg-light mb-1">
         <div>
@@ -132,21 +140,21 @@
   </div>
 </div>
 <!-- End of modal-->
-
-<div class="album py-5 bg-light">
+<div class="container" >
+<div class="album py-5 fan">
   <div class="container">
     <div class="row">
       {% if pictures %} {% for picture in pictures %}
-      <div class="col-md-4">
+      <div class="col-md-4 fan">
         <div class="card mb-4 shadow-sm">
           <img
               src="{{ picture.picture.url }}"
-              class="card-img-top"
+              class="card-img-top img"
               preserveAspectRatio="xMidYMid slice"
               focusable="false"
               role="img"
           />
-          <div class="card-body">
+          <div class="card-body fan">
             <p class="card-text">
               {% if picture.description %} {{ picture.description }} {% endif %}
             </p>
@@ -169,7 +177,7 @@
         </div>
       </div>
       {% endfor %} {% else %}
-      <div class="col-md-4">
+      <div class="col-md-4 fan">
         <div class="card mb-4 shadow-sm">
           <svg
             class="bd-placeholder-img card-img-top"
@@ -185,7 +193,7 @@
             <rect width="100%" height="100%" fill="#55595c" />
             <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
           </svg>
-          <div class="card-body">
+          <div class="card-body bg-dark">
             <p class="card-text">Your photo description</p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
@@ -200,6 +208,7 @@
       {% endif %}
     </div>
   </div>
+</div>
 </div>
 
 <footer class="text-muted">

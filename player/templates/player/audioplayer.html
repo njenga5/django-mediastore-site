@@ -7,18 +7,18 @@
     <script src="{% static 'player/js/all.js' %}"></script>
     <link rel="shortcut icon" href="{% static 'commonops/favicon/favicon2.png' %}" type="image/x-icon">
     <title>Music Player</title>
-    <link rel="stylesheet" href="{% static 'player/css/audiostyle.css' %}" />
+    <link rel="stylesheet" href="{% static 'commonops/css/bootstrap.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'player/css/all.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'player/css/audiostyle.css' %}" />
   </head>
   <body>
     {{ musics|json_script:'audio-src' }}
-    <div class="container">
+    {% include 'dashboard/customnavbar.html' %}
+    <div class="container-2">
       <div id="glow" class="glow disable-animation">
         <div id="player">
-          <span class="text">Audio Player</span>
-          <br />
-          <span id="songName" class="text">Music title</span>
-          <br />
+          <p class="text">Audio Player</p>
+          <p id="songName" class="text">Music title</p>
           <div class="playback_controls">
             <button onclick="skip('prev')" title="Previous">
               <i class="fa fa-fast-backward"></i>
@@ -33,11 +33,9 @@
               <i class="fa fa-fast-forward"></i>
             </button>
           </div>
-          <br />
           <div id="seekbar">
             <input type="range" oninput="setPos(this.value)" id="seek" value="0" max="" />
           </div>
-          <br />
           <div class="volume_controls">
             <button onclick="mute()">
               <i id="mute" class="fa fa-volume-up"></i>

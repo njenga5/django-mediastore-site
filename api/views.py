@@ -1,11 +1,10 @@
-import hashlib
-import binascii
 from django.utils import timezone
+from django.contrib.auth.hashers import check_password
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
-from commonops.models import User
+from commonops.models import CustomUser as User
 from dashboard import models
 from . import serializers
 
@@ -13,12 +12,11 @@ from . import serializers
 class UserView(APIView):
     def get(self, request):
         try:
-            user = User.objects.get(pk=request.GET.get('email'),
-            password=binascii.hexlify(request.GET.get('password', '').encode()).decode())
+            user = User.objects.get(email=request.GET.get('email'))
+            if not check_password(request.GET.get('password', ''), user.password):
+                raise User.DoesNotExist
             serializer = serializers.UserSerializer(user)
-            data = {**serializer.data}
-            data['password'] = binascii.unhexlify(data['password'].encode()).decode()
-            return Response(data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -34,8 +32,9 @@ class UserView(APIView):
 
     def put(self, request):
         try:
-            user = User.objects.get(pk=request.GET.get('email'),
-            password=binascii.hexlify(request.GET.get('password', '').encode()).decode())
+            user = User.objects.get(email=request.GET.get('email'))
+            if not check_password(request.GET.get('password', ''), user.password):
+                raise User.DoesNotExist
             serializer = serializers.UserSerializer(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
@@ -47,27 +46,31 @@ class UserView(APIView):
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
         
 
-class PhotoView(ListCreateAPIView):
+class PhotosView(ListCreateAPIView):
     serializer_class = serializers.PhotoSerializer
     def get_queryset(self):
-        queryset = models.Photo.objects.filter(user_id=self.kwargs.get('email')).order_by("-upload_date")
+        queryset = models.Photo.objects.filter(user__email=self.kwargs.get('email')).order_by("-upload_date")
         return queryset
 
 
 
-class VideoView(ListCreateAPIView):
+class VideosView(ListCreateAPIView):
     serializer_class = serializers.VideoSerializer
     def get_queryset(self):
-        queryset = models.Video.objects.filter(user_id=self.kwargs.get('email')).order_by("-upload_date")
+        queryset = models.Video.objects.filter(user__email=self.kwargs.get('email')).order_by("-upload_date")
         return queryset
     
 
 
-class MusicView(ListCreateAPIView):
+class MusicsView(ListCreateAPIView):
     serializer_class = serializers.MusicSerializer
     def get_queryset(self):
-        queryset = models.Music.objects.filter(user_id=self.kwargs.get('email')).order_by("-upload_date")
+        queryset = models.Music.objects.filter(user__email=self.kwargs.get('email')).order_by("-upload_date")
         return queryset
 
         
-
+class SinglePhotoView(RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.PhotoSerializer
+    def get_queryset(self):
+        queryset = models.Photo.objects.filter(user__email=self.request.GET.get('email'))
+        return queryset

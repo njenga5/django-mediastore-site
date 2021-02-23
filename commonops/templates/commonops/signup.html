@@ -1,25 +1,36 @@
-{% extends 'commonops/_base.html' %} {% load crispy_forms_tags %} {% load static %} {% block extrahead %}
+{% extends 'commonops/_base.html' %} {% load crispy_forms_tags %} {% load static %} 
+{% block extrahead %}
 <title>Sign Up</title>
-<link rel="stylesheet" type="text/css" href="{% static 'commonops/css/signup.css' %}">
-{% endblock %} {% block extrastyle %} .form-control{text-align: center;} .form-group{text-align:center;}
- button{ margin-top: 1rem;} {% endblock %} {% block content %}
-
-
-    {% block error %}{% endblock %}
-    <form method="post" class="form-signup" >
-    <h1 class="h3 mb-3 font-weight-normal text-center">Create an account.</h1>
-    <hr />
-      <div class="row" id="row1"></div>
-      <div class="row" id="row2"></div>
-      {% csrf_token %} {{ form|crispy }}
-      <div class="mb-1">
-        <hr class="mb-4">
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Sign Up</button>
-      </div>
-    </form>
-    <div class="text-center">
-      <p>Already have an account? <a href="{% url 'commonops:auth' %}">Login</a></p>
+<link rel="stylesheet" type="text/css" href="{% static 'commonops/css/signup.css' %}" />
+{% endblock extrahead %} {% block extrastyle %} .form-control{text-align: center;}
+.form-group{text-align:center;} button{ margin-top: 1rem;} {% endblock extrastyle %} 
+{% block customnav %}{% endblock customnav %}
+{% block content %} 
+{%block error %}{% endblock error %}
+<div class="d-inline-block  fan">
+  <div class="d-flex justify-content-center">
+    <div class="col-md-8 mx-3 pl-5">
+      <form method="post" class="form-signup">
+        <h1 class="h3 mb-3 font-weight-normal text-center">Create an account.</h1>
+        <hr />
+        <div class="row" id="row1"></div>
+        <div class="row" id="row2"></div>
+        {% csrf_token %} {{ form|crispy }}
+        <div class="mb-1">
+          <hr class="mb-4" />
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Sign Up</button>
+        </div>
+        <div class="text-center my-3">
+          <p>Already have an account? <a href="{% url 'commonops:auth' %}">Login</a></p>
+        </div>
+      </form>
     </div>
-
+    <aside class="col-md-4 blog-sidebar my-5">
+      <div class="py-4 my-5 col-12" id="pass-rules">
+        <h4 class="font-italic text-info">Your Password:</h4>
+      </div>
+    </aside>
+  </div>
+</div>
 <script src="{% static 'commonops/js/signup.js' %}" type="text/javascript"></script>
-{% endblock %}
+{% endblock content%}

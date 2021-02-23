@@ -1,22 +1,22 @@
 {% extends 'commonops/_base.html' %}
 
-{% block css %}{% endblock %}
-{% block customnav%}{% endblock %}
-
 {% block extrahead%}<title>Signup Unsuccessful</title>{% endblock %}
 
 
 {% block content%}
 <a href="{% url 'commonops:signup' %}">Back</a>
     <center>
-        <div>
-            <h1 style="color: red;">Signup Error</h1>
-            <hr style="border: 2px solid red;">
-            <p>There was an error registering your account.</p>
-            {% if error %}
-                <p>{{ error }}</p>
-            {% endif %}
+        <div class="alert alert-danger my-2 ">
+            <strong>Signup Error</strong>
+            <hr />
+            <p style="text-decoration: underline;">Please correct the errors below:</p>
             {{ errors }}
         </div>
     </center>
+    <script>
+        const errors = document.querySelectorAll('.errorlist')
+        errors.forEach(error =>{
+            error.classList.add(...['list-unstyled', 'm-2',])
+        })
+    </script>
 {% endblock %}
