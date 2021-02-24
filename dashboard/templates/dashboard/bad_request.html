@@ -1,7 +1,7 @@
-{% extends 'commonops/_base.html' %} {% block extrahead %}
+{% extends 'dashboard/album.html.html' %} {% block extrahead %}
 <title>Bad Request</title>
 {% endblock %} 
-{% block customnavbar %}{% endblock customnavbar %}
+{% block customnav %}{% endblock customnav %}
 {% block content %}
 <center>
   <div class="alert alert-warning">
@@ -25,4 +25,5 @@
     const num = setInterval(decrement, 1000);
   </script>
 </center>
-{% endblock %}
+{% endblock content %}
+{% block footer %}{% endblock footer %}

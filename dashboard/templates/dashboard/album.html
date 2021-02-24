@@ -1,4 +1,4 @@
-{% extends 'commonops/_base.html' %} {% load static %} {% load humanize %}{% block extrahead %}
+{% extends '_base.html' %} {% load static %} {% load humanize %}{% block extrahead %}
 <title>My Album | Intranet</title>
 <link href="{% static 'dashboard/css/album.css' %}" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'dashboard/css/normalize.min.css' %}">
@@ -216,15 +216,15 @@
   element.addEventListener("click",  () => {
 
     const html =
-      '<div><form method="post" id="desc-form" class="form">\
+      '<div class="d-flex justify-content-center">\
+      <div class="p-3 ml-5 col-md-12">\
+      <form method="post" id="desc-form" class="form-inline">\
   {% csrf_token %}\
   <div class="row">\
-    <div class="col-md-6 mb-3">\
+    <div class="col-md-6 mt-3">\
       <label for="album-title">Title</label>\
-      <input type="text" id="album-title" placeholder="Title" class="form-control col-lg text-center" name="title" required/>\
+      <input type="text" id="album-title" placeholder="Title" class="form-control text-center" name="title" required/>\
     </div>\
-  </div>\
-  <div class="row">\
     <div class="col-md-6 mb-3">\
       <label for="album-desc">Description</label>\
       <textarea\
@@ -237,7 +237,7 @@
       ></textarea>\
     </div>\
   </div>\
-  <div class="row">\
+  <div class="ml-5 pl-3">\
     <div class="mb-3 text-center btn-group">\
       <button type="submit" class="btn btn-sm">\
         <a class="btn btn-primary my-2">Submit Description</a>\
@@ -248,6 +248,7 @@
     </div>\
   </div>\
   </form>\
+  </div>\
   </div>';
     const elem2 = document.querySelector("#description");
     elem2.innerHTML = html;
