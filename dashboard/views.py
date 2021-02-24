@@ -184,11 +184,16 @@ def delete_item(request, item, item_id):
             elif item == 'music':
                 music = get_object_or_404(models.Music, user__email=user, id=item_id)
                 path = music.track.path
+                art_path = music.art.path
                 norm_path = os.path.splitext(path)[0].split('\\')
                 try:
                     os.unlink(path)
+                    if art_path.split('\\')[-2] != 'default':
+                        os.unlink(art_path)
                 except NotImplementedError:
                     os.remove(path)
+                    if art_path.split('\\')[-2] != 'default':
+                        os.remove(art_path)
                 music.delete()
                 context = {
                     'file':norm_path[-1],
@@ -197,11 +202,16 @@ def delete_item(request, item, item_id):
             elif item == 'vid':
                 video = get_object_or_404(models.Video, user__email=user, pk=item_id)
                 path = video.video.path
+                thumbnail_path = video.thumbnail.path
                 norm_path = os.path.splitext(path)[0].split('\\')
                 try:
                     os.unlink(path)
+                    if thumbnail_path.split('\\')[-2] != 'default':
+                        os.unlink(thumbnail_path)
                 except NotImplementedError:
                     os.remove(path)
+                    if thumbnail_path.split('\\')[-2] != 'default':
+                        os.remove(thumbnail_path)
                 video.delete()
                 context = {
                     'file':norm_path[-1],

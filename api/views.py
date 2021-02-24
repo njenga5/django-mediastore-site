@@ -12,12 +12,12 @@ from django.contrib.auth import get_user_model as User
 class UserView(APIView):
     def get(self, request):
         try:
-            user = User.objects.get(email=request.GET.get('email'))
+            user = User().objects.get(email=request.GET.get('email'))
             if not check_password(request.GET.get('password', ''), user.password):
                 raise User.DoesNotExist
             serializer = serializers.UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist:
+        except User().DoesNotExist:
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
     
     def post(self, request):
@@ -32,15 +32,15 @@ class UserView(APIView):
 
     def put(self, request):
         try:
-            user = User.objects.get(email=request.GET.get('email'))
+            user = User().objects.get(email=request.GET.get('email'))
             if not check_password(request.GET.get('password', ''), user.password):
-                raise User.DoesNotExist
+                raise User().DoesNotExist
             serializer = serializers.UserSerializer(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except User.DoesNotExist:
+        except User().DoesNotExist:
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
         
 

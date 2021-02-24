@@ -23,6 +23,8 @@ const fanDivs = document.querySelectorAll('.fan')
 const formFields = document.querySelectorAll('.form-control')
 const navBar = document.querySelector('.navbar')
 const navLinks = document.querySelectorAll('.nav-link')
+const title2 = document.querySelector('#title')
+const artist2 = document.querySelector('#artist')
 
 const changeTheme = (value) => {
     if (parseInt(value) === 0){
@@ -42,12 +44,23 @@ const changeTheme = (value) => {
         }) 
         
         darkToggler.style.border = '1px solid antiquewhite'
-        navBar.classList.remove(...['navbar-dark', 'bg-dark'])
-        navBar.classList.add('bg-light')
 
-        navLinks.forEach(link => {
-            link.classList.add('text-dark')
-        })
+        try {
+            navBar.classList.remove(...['navbar-dark', 'bg-dark'])
+            navBar.classList.add('bg-light')
+    
+            navLinks.forEach(link => {
+                link.classList.add('text-dark')
+            })
+
+            title2.classList.add('text-dark')
+            artist2.classList.add('text-dark')
+            title2.classList.remove('text-white')
+            artist2.classList.remove('text-white')
+            
+        } catch (error) {
+            
+        }
 
     }else if (parseInt(value) === 1){
 
@@ -64,12 +77,22 @@ const changeTheme = (value) => {
             field.classList.add('text-white')
         })
 
-        navBar.classList.add(...['navbar-dark', 'bg-dark'])
-        navBar.classList.remove('bg-light')
+        try {
+            navBar.classList.add(...['navbar-dark', 'bg-dark'])
+            navBar.classList.remove('bg-light')
+    
+            navLinks.forEach(link => {
+                link.classList.remove('text-dark')
+            })
 
-        navLinks.forEach(link => {
-            link.classList.remove('text-dark')
-        })
+            title2.classList.add('text-white')
+            artist2.classList.add('text-white')
+            title2.classList.remove('text-dark')
+            artist2.classList.remove('text-dark')
+            
+        } catch (error) {
+            
+        }
     }
 }
 

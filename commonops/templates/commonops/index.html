@@ -14,7 +14,7 @@
     />
     <title>Intranet | Home</title>
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'commonops/css/bootstrap.min.css' %}" rel="stylesheet" />
 
     <style>
       .bd-placeholder-img {
@@ -60,11 +60,15 @@
 
       <footer class="mastfoot mt-auto">
         <div class="inner">
-          <p>
-            &copy;2020. Intranetsite
+          <p id="copy">
+            &copy;
           </p>
         </div>
       </footer>
     </div>
+    <script>
+      const year = new Date().getFullYear()
+      document.querySelector('#copy').textContent += `${year}. Intranetsite`
+    </script>
   </body>
 </html>
