@@ -1,7 +1,7 @@
 {% extends 'dashboard/album.html' %} {% load static %} {% block extrahead %}<title>
   Upload Photo</title>{% endblock %} {% load crispy_forms_tags %} {% block content %}
 {% comment %} <a href="{% url 'dashboard:profile' %}">&lArr; Back</a> {% endcomment %}
-<center>
+<center class="mb-5">
   <div class="col-md-6 fan">
   {% block error %}
   {% endblock error %}
