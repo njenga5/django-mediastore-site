@@ -20,7 +20,7 @@
     <!-- Bootstrap core CSS -->
     <link href="{% static 'commonops/css/bootstrap.min.css' %}" rel="stylesheet" />
     <link href="{% static 'commonops/css/starter-template.css' %}" rel="stylesheet" />
-    {% block extrahead %}{% endblock %}
+    {% block extrahead %}{% endblock extrahead %}
 
     <style>
       .bd-placeholder-img {
@@ -37,37 +37,41 @@
           font-size: 3.5rem;
         }
       }
-      {% block extrastyle %}{% endblock %}
+      #dark-theme {
+        -webkit-appearance: none;
+        border: 1px solid #000000;
+        height: 10px;
+        width: 40px;
+        vertical-align: middle;
+        border-radius: 20px;
+        background-color: aqua;
+        outline: none;
+      }
+      #dark-theme::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 10px;
+        height: 10px;
+        border: 1px solid #000000;
+        border-radius: 50%;
+      }
+      #dark-theme:hover{
+        cursor: pointer;
+      }
+
+      {% block extrastyle %}{% endblock extrastyle %}
     </style>
   </head>
   <body>
-    {% block customnav %} {% include 'dashboard/customnavbar.html' %} {% endblock %}
+    {% block customnav %} {% include 'dashboard/customnavbar.html' %} {% endblock customnav %}
 
     <main role="main" class="container">
-      {% block content %}{% endblock %}
+      {% block extras %}{% endblock extras %}
+      {% block content %}{% endblock content %}
+      <!--
+        This file is a template.If you render it on the browser, it will be empty.
+        Edit the fields specified by the DTL in other templates to change the contents of this template.
+      -->
     </main>
-    <script>
-      const fans = document.querySelectorAll('.fan')
-      fans.forEach(fan => {
-          fan.classList.remove('bg-light')
-          fan.classList.add(...['bg-dark', 'rounded'])
-      });
-    </script>
-    <script>
-      const classNames = ['bg-dark', 'text-white']
-      try{
-        const inputFields = document.querySelectorAll('.form-control')
-        inputFields.forEach(field =>{
-          field.classList.add(...classNames)
-          if (field.localName === 'input'){
-            field.classList.add('text-center')
-          }
-        })
-        const textArea = document.querySelector('textarea')
-        textArea.setAttribute('rows', "5")
-      }catch(error){
-
-      }
-    </script>
+    <script src="{% static 'commonops/js/_base.js' %}"></script>
   </body>
 </html>

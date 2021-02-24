@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
 from commonops.views import home_view
 
 urlpatterns = [
@@ -23,5 +24,5 @@ urlpatterns = [
     path('accounts/', include('commonops.urls')),
     path('', include('dashboard.urls')),
     path('player/', include('player.urls')),
-    path('api/', include('api.urls'))
+    path('api/', include('api.urls')),
     ]

@@ -3,6 +3,8 @@
 {% comment %} <a href="{% url 'dashboard:profile' %}">&lArr; Back</a> {% endcomment %}
 <center>
   <div class="col-md-6 fan">
+  {% block error %}
+  {% endblock error %}
     <div class="card-body">
     {% block title %}
       <h1 class="h2 font-weight-normal">Upload a Photo</h1>

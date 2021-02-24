@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark fan">
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark rounded">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,7 +21,10 @@
       </ul>
     </div>
     <ul class="navbar-nav">
-        <li class="nav-item ">
+        <div class="pt-2 mr-2">
+          <input type="range" title="Dark Theme" name="dark-theme" id="dark-theme" max="1" min="0" step="1" value="{{ user.dark_fan }}">
+        </div>
+          <li class="nav-item ">
             <a class="nav-link " href="{% url 'dashboard:logout' %}" tabindex="-1" aria-disabled="false">Logout</a>
           </li>
       </ul>

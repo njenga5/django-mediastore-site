@@ -9,12 +9,18 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+
+    class Dark_Fan(models.IntegerChoices):
+        YES = 1
+        NO = 0
+
     email = models.EmailField(_('email address'), unique=True)
     full_name = models.CharField(_('Full Name'), max_length=150, null=False, blank=False)
     phone_number = models.CharField(_('Phone Number'), max_length=13, null=False, blank=False)
     is_staff = models.BooleanField(default=False,  help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')
     is_active = models.BooleanField(default=True,  help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')
     date_joined = models.DateTimeField(auto_now_add=True)
+    dark_fan = models.IntegerField(_('Preffers dark theme'), choices=Dark_Fan.choices, default=Dark_Fan.YES)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name', 'phone_number']

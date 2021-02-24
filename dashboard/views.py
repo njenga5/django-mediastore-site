@@ -56,12 +56,13 @@ def upload_photo(request):
         elif request.method == "POST":
             form = forms.PhotoForm(request.POST, request.FILES)
             if form.is_valid():
+                user = User.objects.get(email=request.session['user'])
                 photo = form.save(commit=False)
-                photo.picture = request.FILES['picture']
-                photo.user = User.objects.get(email=request.session['user'])
+                photo.picture = form.cleaned_data.get('picture')
+                photo.user = user
                 photo.save()
                 messages.success(request, f"Photo {photo.picture.url.split('/')[-1]} uploaded successfully.")
-            return render(request, 'dashboard/uploadphoto.html', {'form': form})
+            return render(request, 'dashboard/uploadphoto.html', {'form': form, 'user': user})
         return render(request, 'dashboard/bad_request.html')
     return redirect('commonops:auth')
 
@@ -75,16 +76,17 @@ def upload_music(request):
         elif request.method == 'POST':
             form = forms.MusicForm(request.POST, request.FILES)
             if form.is_valid():
+                user = User.objects.get(email=request.session['user'])
                 music = form.save(commit=False)
-                music.user = User.objects.get(email=request.session['user'])
-                music.track = request.FILES['track']
+                music.user = user
+                music.track = form.cleaned_data.get('track')
                 file_type = music.track.url.split('.')[-1]
                 file_type.lower()
                 if file_type not in MUSIC_TYPES:
                     return render(request, 'dashboard/errormusic.html', {'allowed_types': MUSIC_TYPES})
                 music.save()
                 messages.success(request, f"Track {music.track.url.split('/')[-1]} uploaded successfully")
-            return render(request, 'dashboard/uploadmusic.html', {'form': form})
+            return render(request, 'dashboard/uploadmusic.html', {'form': form, 'user': user})
         return render(request, 'dashboard/bad_request.html')
     return redirect('commonops:auth')
     
@@ -99,15 +101,16 @@ def upload_video(request):
             form = forms.VideoForm(request.POST, request.FILES)
             if form.is_valid():
                 video = form.save(commit=False)
-                video.user = User.objects.get(email=request.session['user'])
-                video.video = request.FILES['video']
+                user = User.objects.get(email=request.session['user'])
+                video.user = user
+                video.video = form.cleaned_data.get('video')
                 file_type = video.video.url.split('.')[-1]
                 file_type.lower()
                 if file_type not in VIDEO_TYPES:
                     return render(request, 'dashboard/errorvideo.html', {'allowed_types': VIDEO_TYPES})
                 video.save()
                 messages.success(request, f"Video {video.video.url.split('/')[-1]} uploaded successfully")
-            return render(request, 'dashboard/uploadvideo.html', {'form': form})
+            return render(request, 'dashboard/uploadvideo.html', {'form': form, 'user': user})
         return render(request, 'dashboard/bad_request.html')
     return redirect('commonops:auth')
 
@@ -219,6 +222,7 @@ def edit_photo_view(request, pk):
             context = {
                 'photo': photo,
                 'collections': collections,
+                'user': photo.user
             }
             return render(request, 'dashboard/editphoto.html', context)
 

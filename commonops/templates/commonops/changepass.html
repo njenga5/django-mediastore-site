@@ -1,9 +1,8 @@
-{% extends 'commonops/_base.html' %}
+{% extends 'commonops/login.html' %}
 {% load crispy_forms_tags %}
-{% block extrahead %}<title>{% block title %}Refactor Password{% endblock %}</title>{% endblock %}
-{% comment %} {% block extrastyle %}.form-control{
-    text-align:center;
-} {% endblock %} {% endcomment %}
+{% block extrahead %}<title>Change Password</title>{% endblock extrahead %}
+{% block customnav %}{% endblock customnav %}
+
 {% block content %}
     <div>
         <center>
@@ -26,4 +25,4 @@
         document.querySelector('#id_email').focus();
     </script>
 
-{% endblock %}
+{% endblock content %}

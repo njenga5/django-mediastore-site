@@ -1,12 +1,30 @@
 {% extends 'commonops/_base.html' %} {% load crispy_forms_tags %} {% load static %} 
+
 {% block extrahead %}
 <title>Sign Up</title>
 <link rel="stylesheet" type="text/css" href="{% static 'commonops/css/signup.css' %}" />
-{% endblock extrahead %} {% block extrastyle %} .form-control{text-align: center;}
-.form-group{text-align:center;} button{ margin-top: 1rem;} {% endblock extrastyle %} 
+{% endblock extrahead %} 
+
+{% block extrastyle %} 
+.form-control{text-align: center;}
+.form-group{text-align:center;} 
+button{ margin-top: 1rem;}
+{% endblock extrastyle %} 
+
 {% block customnav %}{% endblock customnav %}
+
+{% block extras %}
+  <div class="col-12 mb-3 d-flex justify-content-end">
+    <div class="pt-2 mr-2">
+      <input type="range" title="Dark Theme" name="dark-theme" id="dark-theme" max="1" min="0" step="1" value="1">
+    </div>
+  </div>
+{% endblock extras %}
+
 {% block content %} 
+
 {%block error %}{% endblock error %}
+
 <div class="d-inline-block  fan">
   <div class="d-flex justify-content-center">
     <div class="col-md-8 mx-3 pl-5">
@@ -33,4 +51,5 @@
   </div>
 </div>
 <script src="{% static 'commonops/js/signup.js' %}" type="text/javascript"></script>
+
 {% endblock content%}

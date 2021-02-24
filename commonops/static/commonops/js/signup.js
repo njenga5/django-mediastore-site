@@ -46,11 +46,17 @@ setInterval(() => {
         document.getElementById('1').className = 'text-danger'
     }else if(pass1.value.length === 0){
         document.getElementById('1').className = 'text-info'
+        document.getElementById('3').className = 'text-info'
     }else{
+        if (isNaN(pass1.value)){
+            document.getElementById('3').className = 'text-success'
+        }else{
+            document.getElementById('3').className = 'text-danger'
+            
+        }
         document.getElementById('1').className = 'text-success'
     }
 }, 100)
 
 document.getElementById('id_email').removeAttribute('autofocus')
 document.getElementById('id_full_name').focus()
-

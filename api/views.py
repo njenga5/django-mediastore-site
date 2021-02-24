@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
-from commonops.models import CustomUser as User
 from dashboard import models
 from . import serializers
+from django.contrib.auth import get_user_model as User
 
 
 class UserView(APIView):
@@ -38,9 +38,7 @@ class UserView(APIView):
             serializer = serializers.UserSerializer(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                data = {**serializer.data}
-                data['password'] = binascii.unhexlify(data['password'].encode()).decode()
-                return Response(data, status=status.HTTP_202_ACCEPTED)
+                return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
             return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)

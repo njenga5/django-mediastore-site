@@ -1,7 +1,15 @@
 {% extends 'commonops/_base.html' %} {% load static %} {% block extrahead %}
 <title>Login</title>
 <link rel="stylesheet" href="{% static 'commonops/css/signin.css' %}" />
-{% endblock %} {% block customnav %}{% endblock %} {% block content %}
+{% endblock extrahead %} {% block customnav %}{% endblock customnav%} 
+{% block extras %}
+  <div class="col-12 mb-3 d-flex justify-content-end">
+    <div class="pt-2 mr-2">
+      <input type="range" title="Dark Theme" name="dark-theme" id="dark-theme" max="1" min="0" step="1" value="1">
+    </div>
+  </div>
+{% endblock extras %}
+{% block content %}
 <center>
 <div class="fan p-3 d-inline-block">
   <div class="d-flex justify-content-center ">
@@ -52,4 +60,4 @@
     const year = new Date().getFullYear()
     document.querySelector('#copy').textContent += ` ${year}.All Rights Reserved`
 </script>
-{% endblock %}
+{% endblock content %}
