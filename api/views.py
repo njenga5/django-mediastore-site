@@ -1,24 +1,21 @@
-from django.utils import timezone
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
 from dashboard import models
 from . import serializers
-from django.contrib.auth import get_user_model as User
 
 
 class UserView(APIView):
     def get(self, request):
-        try:
-            user = User().objects.get(email=request.GET.get('email'))
-            if not check_password(request.GET.get('password', ''), user.password):
-                raise User.DoesNotExist
+        email = request.GET.get('email', '')
+        password = request.GET.get('password', '')
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
             serializer = serializers.UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except User().DoesNotExist:
-            return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
     
     def post(self, request):
         token = request.data.pop('token', None)
@@ -31,17 +28,16 @@ class UserView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        try:
-            user = User().objects.get(email=request.GET.get('email'))
-            if not check_password(request.GET.get('password', ''), user.password):
-                raise User().DoesNotExist
+        email = request.GET.get('email', '')
+        password = request.GET.get('password', '')
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
             serializer = serializers.UserSerializer(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except User().DoesNotExist:
-            return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error':'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
         
 
 class PhotosView(ListCreateAPIView):

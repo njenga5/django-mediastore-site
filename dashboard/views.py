@@ -1,11 +1,11 @@
-from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from django.http import HttpResponseBadRequest, Http404
 import os
+from django.shortcuts import render, HttpResponse, redirect
+from django.http import Http404
 from django.contrib import messages
 from django.utils import timezone
+from django.contrib.auth import logout
 from . import forms
 from . import models
-from commonops.models import CustomUser as User
 
 MUSIC_TYPES = ['mp3', 'ogg', 'm4a', 'wav', 'opus']
 VIDEO_TYPES = ['mp4', 'webm',]
@@ -13,9 +13,8 @@ MAX_SPACE = 524_288_000
 
 
 def dashboard_home(request):
-    if 'user' in request.session:
-        user_email = request.session['user']
-        user = get_object_or_404(User, email=user_email)
+    if request.user.is_authenticated:
+        user = request.user
         pictures = user.photo_set.order_by('-upload_date')
         musics = user.music_set.all()
         videos = user.video_set.all()
@@ -29,7 +28,6 @@ def dashboard_home(request):
             'vids_size': vids_size,
             'total_size': sum((pic_size, music_size, vids_size)),
             'max_size': MAX_SPACE,
-            'user': user,
         }
         if len(user.albumdescription_set.all()) > 0:
             context['title'] = \
@@ -49,14 +47,14 @@ def dashboard_home(request):
 
 def upload_photo(request):
     form = forms.PhotoForm()
-    if 'user' in request.session:
+    if request.user.is_authenticated:
         if request.method == "GET":
             return render(request, 'dashboard/uploadphoto.html', {'form': form})
 
         elif request.method == "POST":
             form = forms.PhotoForm(request.POST, request.FILES)
             if form.is_valid():
-                user = User.objects.get(email=request.session['user'])
+                user = request.user
                 photo = form.save(commit=False)
                 photo.picture = form.cleaned_data.get('picture')
                 photo.user = user
@@ -69,14 +67,14 @@ def upload_photo(request):
 
 def upload_music(request):
     form = forms.MusicForm()
-    if 'user' in request.session:
+    if request.user.is_authenticated:
         if request.method == 'GET':
             return render(request, 'dashboard/uploadmusic.html', {'form': form})
 
         elif request.method == 'POST':
             form = forms.MusicForm(request.POST, request.FILES)
             if form.is_valid():
-                user = User.objects.get(email=request.session['user'])
+                user = request.user
                 music = form.save(commit=False)
                 music.user = user
                 music.track = form.cleaned_data.get('track')
@@ -93,7 +91,7 @@ def upload_music(request):
 
 def upload_video(request):
     form = forms.VideoForm()
-    if 'user' in request.session:
+    if request.user.is_authenticated:
         if request.method == 'GET':
             return render(request, 'dashboard/uploadvideo.html', {'form': form})
 
@@ -101,7 +99,7 @@ def upload_video(request):
             form = forms.VideoForm(request.POST, request.FILES)
             if form.is_valid():
                 video = form.save(commit=False)
-                user = User.objects.get(email=request.session['user'])
+                user = request.user
                 video.user = user
                 video.video = form.cleaned_data.get('video')
                 file_type = video.video.url.split('.')[-1]
@@ -127,7 +125,7 @@ def profile_details(request):
 
 # TODO: Refactor this function to use tags
 def add_to_collection(request, item_id, source):
-    if 'user' in request.session:
+    if request.user.is_authenticated:
         if request.method == 'POST':
             data = request.POST
             query_set_colls = models.Collection.objects.all()
@@ -154,7 +152,7 @@ def add_to_collection(request, item_id, source):
 
 
 def find_item(request, item, item_id):
-    if 'user' in request.session:
+    if request.user.is_authenticated:
         if request.method == 'GET':
             context = {
                 'item':item,
@@ -165,11 +163,11 @@ def find_item(request, item, item_id):
     return redirect('commonops:auth')
 
 def delete_item(request, item, item_id):
-    if 'user' in request.session:
+    if request.user.is_authenticated:
         if request.method == 'GET':
-            user = request.session['user']
+            user = request.user
             if item == 'pic':
-                photo = get_object_or_404(models.Photo, user__email=user, id=item_id)
+                photo = user.photo_set.get(id=item_id)
                 path = photo.picture.path
                 norm_path = os.path.splitext(path)[0].split('\\')
                 try:
@@ -182,7 +180,7 @@ def delete_item(request, item, item_id):
                     'type':'Picture',
                 }
             elif item == 'music':
-                music = get_object_or_404(models.Music, user__email=user, id=item_id)
+                music = user.music_set.get(id=item_id)
                 path = music.track.path
                 art_path = music.art.path
                 norm_path = os.path.splitext(path)[0].split('\\')
@@ -200,7 +198,7 @@ def delete_item(request, item, item_id):
                     'type':'Track',
                 }
             elif item == 'vid':
-                video = get_object_or_404(models.Video, user__email=user, pk=item_id)
+                video = user.video_set.get(id=item_id)
                 path = video.video.path
                 thumbnail_path = video.thumbnail.path
                 norm_path = os.path.splitext(path)[0].split('\\')
@@ -224,15 +222,14 @@ def delete_item(request, item, item_id):
     return redirect('commonops:auth')
 
 def edit_photo_view(request, pk):
-    if 'user' in request.session:
+    if request.user.authenticated:
         if request.method == 'GET':
-            user = request.session.get('user')
-            photo = get_object_or_404(models.Photo, user__email=user, id=pk)
+            user = request.user
+            photo = user.photo_set.get(id=pk)
             collections = photo.tags.all()
             context = {
                 'photo': photo,
                 'collections': collections,
-                'user': photo.user
             }
             return render(request, 'dashboard/editphoto.html', context)
 
@@ -241,8 +238,9 @@ def edit_photo_view(request, pk):
     return redirect('commonops:auth')
 
 
-def logout(request):
+def logout_view(request):
     try:
+        logout(request)
         request.session.clear_expired()
         request.session.flush()
     except Exception as e:

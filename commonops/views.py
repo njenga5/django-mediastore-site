@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect, reverse
 from django.views.decorators.debug import sensitive_post_parameters
 from django.conf import settings
@@ -11,32 +11,28 @@ def home_view(request):
 
 
 @sensitive_post_parameters()
-def login(request):
+def login_view(request):
     form = forms.LoginForm()
     if request.method == 'GET':
-        if 'user' in request.session:
+
+        if request.user.is_authenticated:
             try:
-                models.CustomUser.objects.get(email=request.session['user'])
+                models.CustomUser.objects.get(email=request.user.email)
                 return redirect('dashboard:profile')
             except models.CustomUser.DoesNotExist:
-                del request.session['user']
                 return render(request, 'commonops/login.html', {'form': form})
 
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
         if form.is_valid():
-            try:
-                user = models.CustomUser.objects.get(email=form.cleaned_data.get('email'))
-                if not check_password(form.cleaned_data.get('password'), user.password):
-                    return render(request, 'commonops/loginerror.html')
-            except models.CustomUser.DoesNotExist:
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('dashboard:profile')
+            else:
                 return render(request, 'commonops/loginerror.html')
-            try:
-                del request.session['user']
-            except KeyError:
-                pass
-            request.session['user'] = user.email
-            return redirect('dashboard:profile')
     return render(request, 'commonops/login.html', {'form': form})
 
 
@@ -49,7 +45,6 @@ def sign_up(request):
             user = form.save(commit=False)
             if form.cleaned_data.get('password1') != form.cleaned_data.get('password2'):
                 return render(request, 'commonops/signuperror.html', {'error': 'Passwords do not match.'})
-            # user.password = form.cleaned_data.get('password1')
             user.save()
             return redirect('commonops:auth')
         return render(request, 'commonops/signuperror.html', {'errors': form.errors})
@@ -83,7 +78,6 @@ def change_password(request):
                     Intranetsite Team.
             """
             send_mail(subject, message, 'no-reply@intranet.com', [user.email], html_message=message)
-            request.session['email'] = user.email
             return redirect('commonops:email-sent')
         return render(request, 'commonops/changepasserror.html', {'form': form, 'errors': form.errors})
 

@@ -22,7 +22,7 @@
     </div>
     <ul class="navbar-nav">
         <div class="pt-2 mr-2">
-          <input type="range" title="Dark Theme" name="dark-theme" id="dark-theme" max="1" min="0" step="1" value="{{ user.dark_fan }}">
+          <input type="range" title="Dark Theme" name="dark-theme" id="dark-theme" max="1" min="0" step="1" value="{{ request.user.dark_fan }}">
         </div>
           <li class="nav-item ">
             <a class="nav-link " href="{% url 'dashboard:logout' %}" tabindex="-1" aria-disabled="false">Logout</a>
