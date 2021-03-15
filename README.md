@@ -4,14 +4,15 @@ Intranetsite is a project undertaken as a process of learning Django framework.�
 ## Basic setup 🔧🔧
 1. Clone the repository, cd into django-mediastore-site and activate a virtual environment.
 2. Run <code>pip install -r requirements.txt.</code>
-3. Set ```python 
-4. Debug = True
-5. ``` 
-6. in intranetsite/settings.py
-7. Make the migrations.<code>python manage.py migrate</code>
-8. Spin up the django development server.
-9. Visit [link] http://localhost:8000/.
-10. Explore and enjoy!
+3. Set 
+4. ```python 
+5. Debug = True
+6. ``` 
+7. in intranetsite/settings.py
+8. Make the migrations.<code>python manage.py migrate</code>
+9. Spin up the django development server.
+10. Visit [link] http://localhost:8000/.
+11. Explore and enjoy!
 
 ## Keep in mind  👇
 -> You need to configure your environment variables to have the necessary values for:<br />
