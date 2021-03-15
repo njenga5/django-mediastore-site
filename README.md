@@ -2,17 +2,23 @@
 Intranetsite is a project undertaken as a process of learning Django framework.📚📚🐣 It, basically, is an online media storage bucket. It can store images, music files and video files. It also provides an online gallery, video and audio players for preview.
 
 ## Basic setup 🔧🔧
-1. Clone the repository, cd into django-mediastore-site and activate a virtual environment.
-2. Run <code>pip install -r requirements.txt.</code>
-3. Set 
-4. ```python 
+ Clone the repository, cd into django-mediastore-site and activate a virtual environment.
+ Run ```bash
+    pip install -r requirements.txt.
+    ```
+ Set 
+  ```python 
     DEBUG = True
-6. ``` 
-7. in intranetsite/settings.py
-8. Make the migrations.<code>python manage.py migrate</code>
-9. Spin up the django development server.
-10. Visit [link] http://localhost:8000/.
-11. Explore and enjoy!
+  ``` 
+ in intranetsite/settings.py
+ Make the migrations.
+
+ ```bash
+    python manage.py migrate
+ ```
+ Spin up the django development server.
+ Visit [link] http://localhost:8000/.
+ Explore and enjoy!
 
 ## Keep in mind  👇
 -> You need to configure your environment variables to have the necessary values for:<br />
