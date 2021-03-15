@@ -3,9 +3,10 @@ Intranetsite is a project undertaken as a process of learning Django framework.�
 
 ## Basic setup 🔧🔧
  Clone the repository, cd into django-mediastore-site and activate a virtual environment.
- Run ```bash
+ Run 
+   ```bash
     pip install -r requirements.txt.
-    ```
+   ```
     
  Set 
   ```python 
