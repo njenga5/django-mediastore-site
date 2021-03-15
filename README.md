@@ -6,6 +6,7 @@ Intranetsite is a project undertaken as a process of learning Django framework.ð
  Run ```bash
     pip install -r requirements.txt.
     ```
+    
  Set 
   ```python 
     DEBUG = True
