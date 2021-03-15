@@ -6,11 +6,12 @@ Intranetsite is a project undertaken as a process of learning Django framework.ð
 2. Run <code>pip install -r requirements.txt.</code>
 3. Set ```python 
 4. Debug = True
-5. ``` in intranetsite/settings.py
-6. Make the migrations.<code>python manage.py migrate</code>
-7. Spin up the django development server.
-8. Visit [link] http://localhost:8000/.
-9. Explore and enjoy!
+5. ``` 
+6. in intranetsite/settings.py
+7. Make the migrations.<code>python manage.py migrate</code>
+8. Spin up the django development server.
+9. Visit [link] http://localhost:8000/.
+10. Explore and enjoy!
 
 ## Keep in mind  ðŸ‘‡
 -> You need to configure your environment variables to have the necessary values for:<br />
