@@ -6,7 +6,7 @@ Intranetsite is a project undertaken as a process of learning Django framework.ð
 2. Run <code>pip install -r requirements.txt.</code>
 3. Set 
 4. ```python 
-5. Debug = True
+    DEBUG = True
 6. ``` 
 7. in intranetsite/settings.py
 8. Make the migrations.<code>python manage.py migrate</code>
