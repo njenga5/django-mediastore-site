@@ -3,9 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-/* body {
-  background-color: rgba(30, 35, 39, 0.911);
-} */
 .vid-container {
   min-width: 50%;
 }
@@ -27,4 +24,7 @@
 }
 .card-body{
     height: 4rem;
+}
+video:hover{
+  cursor: pointer;
 }

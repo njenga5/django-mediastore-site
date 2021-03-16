@@ -92,14 +92,14 @@ function addList(playlist) {
       wrapper.setAttribute("class", "wrap-text");
 
       span = document.createElement("span");
-      span.innerHTML = fileUrl;
+      span.innerText = fileUrl;
 
       wrapper.appendChild(span);
       listItem.appendChild(wrapper);
 
       btn1 = document.createElement("button");
       btn1.setAttribute("onclick", "removeList(this)");
-      btn1.innerHTML = "&times;";
+      btn1.innerText = "&times;";
 
       btn2 = document.createElement("button");
       // btn2.setAttribute('onclick','removeList(this)');
