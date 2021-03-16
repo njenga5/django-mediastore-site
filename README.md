@@ -35,7 +35,6 @@ Intranetsite is a project undertaken as a process of learning Django framework.�
 ```bash
    python -m smtpd -n -c DebuggingServer localhost:8025
 ```
-
 <br/>-> You have to upload a file to play or view it.😎😎
 
 ## Contributing
