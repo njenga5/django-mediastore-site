@@ -174,10 +174,6 @@ DATABASES['default'].update(db_from_env)
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Dropbox Storage
-# DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-# DROPBOX_OAUTH2_TOKEN = env.get('DROPBOX_OAUTH2_TOKEN', 'hpvoPjKOlBUAAAAAAAAAAXjkt2c4e7zfXp_QDSy6KogTiYFBb1mbdwZAyxbaVUEM')
-# DROPBOX_ROOT_PATH = '/'
 
 AUTH_USER_MODEL = 'commonops.CustomUser'
 

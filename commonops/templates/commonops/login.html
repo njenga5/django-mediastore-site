@@ -1,63 +1,77 @@
 {% extends '_base.html' %} {% load static %} {% block extrahead %}
 <title>Login</title>
 <link rel="stylesheet" href="{% static 'commonops/css/signin.css' %}" />
-{% endblock extrahead %} {% block customnav %}{% endblock customnav%} 
-{% block extras %}
-  <div class="col-12 mb-3 d-flex justify-content-end">
-    <div class="pt-2 mr-2">
-      <input type="range" title="Dark Theme" name="dark-theme" id="dark-theme" max="1" min="0" step="1" value="1">
-    </div>
+{% endblock extrahead %} {% block customnav %}{% endblock customnav%} {% block extras %}
+<div class="col-12 mb-3 d-flex justify-content-end">
+  <div class="pt-2 mr-2">
+    <input
+      type="range"
+      title="Dark Theme"
+      name="dark-theme"
+      id="dark-theme"
+      max="1"
+      min="0"
+      step="1"
+      value="1"
+    />
   </div>
-{% endblock extras %}
-{% block content %}
-<center>
-<div class="fan p-3 d-inline-block">
-  <div class="d-flex justify-content-center ">
-    <img src="{% static 'commonops/favicon/favicon2.png' %}" alt="" />
-  </div>
-<form class="form-signin" action="{% url 'commonops:auth' %}" method="POST">
-      <h1 class="h3 mb-4 font-weight-normal">Account authentication</h1>
-    {% csrf_token %}
-    {% block error %}{% endblock %}
-    <div class="form-label-group">
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input
-        type="email"
-        name="email"
-        id="inputEmail"
-        class="form-control"
-        placeholder="Email address"
-        required
-        autofocus
-      />
-    </div>
-    <div class="form-label-group">
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input
-        type="password"
-        name="password"
-        id="inputPassword"
-        class="form-control"
-        placeholder="Password"
-        required
-      />
-    </div>
-    <div class="checkbox mb-3 text-center">
-      <label> <input type="checkbox" name="remember-me" value="remember-me" /> Remember me </label>
-    </div>
-    <div class="mb-3">
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </div>
-    <div class="text-center">
-      <p>Don't have an account? <a href="{% url 'commonops:signup' %}">Sign Up</a></p>
-      <a href="{% url 'commonops:chpass' %}">Forgot Password?</a>
-    </div>
-  </form>
 </div>
+{% endblock extras %} {% block content %}
+<center>
+  <div class="fan p-3 d-inline-block">
+    <div class="d-flex justify-content-center">
+      <img src="{% static 'commonops/favicon/favicon2.png' %}" alt="" />
+    </div>
+    <form
+      class="form-signin needs-validation g-3"
+      novalidate
+      action="{% url 'commonops:auth' %}"
+      method="POST"
+    >
+      <h1 class="h3 mb-4 font-weight-normal">Account authentication</h1>
+      {% csrf_token %} {% block error %}{% endblock %}
+      <div class="form-floating">
+        <input
+          type="email"
+          name="email"
+          id="inputEmail"
+          class="form-control"
+          placeholder="Email address"
+          required
+          autofocus
+        />
+        <label for="inputEmail" class="sr-only">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input
+          type="password"
+          name="password"
+          id="inputPassword"
+          class="form-control"
+          placeholder="Password"
+          required
+        />
+        <label for="inputPassword" class="sr-only">Password</label>
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="checkbox mb-3 text-center">
+        <label>
+          <input type="checkbox" name="remember-me" value="remember-me" /> Remember me
+        </label>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </div>
+      <div class="text-center">
+        <p>Don't have an account? <a href="{% url 'commonops:signup' %}">Sign Up</a></p>
+        <a href="{% url 'commonops:chpass' %}">Forgot Password?</a>
+      </div>
+    </form>
+  </div>
   <p class="mt-5 mb-3 text-muted" id="copy">&copy;</p>
 </center>
 <script>
-    const year = new Date().getFullYear()
-    document.querySelector('#copy').textContent += ` ${year}.All Rights Reserved`
+  const year = new Date().getFullYear();
+  document.querySelector("#copy").textContent += ` ${year}.All Rights Reserved`;
 </script>
 {% endblock content %}
