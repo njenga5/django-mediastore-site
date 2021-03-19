@@ -1,5 +1,5 @@
 # About Project Intranetsite
-Intranetsite is a project undertaken as a process of learning Django framework.📚📚🐣 It, basically, is an online media storage bucket. It can store images, music files and video files. It also provides an online gallery, video and audio players for preview.
+Intranetsite is a fun, fullstack website made with the Django framework.📚📚🐣 It, basically, is an online media storage bucket. It can store images, music files and video files. It also provides an online gallery, video and audio players for preview.
 
 ## Basic setup 🔧🔧
  Clone the repository, cd into django-mediastore-site and activate a virtual environment.
