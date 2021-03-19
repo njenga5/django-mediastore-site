@@ -123,33 +123,6 @@ def profile_details(request):
     else:
         return redirect('commonops:auth')
 
-# TODO: Refactor this function to use tags
-def add_to_collection(request, item_id, source):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            data = request.POST
-            query_set_colls = models.Collection.objects.all()
-            collection = models.Collection(name=data['collections'])
-            if collection.name in (query.name for query in query_set_colls):
-                collection = query_set_colls.get(name=data['collections'])
-            else:
-                collection.save()
-
-            if source == 'vid':
-                vid = get_object_or_404(models.Video, pk=item_id)
-                vid.collections.add(collection)
-                return HttpResponse(f'Video {vid.video.url.split("/")[-1]} added to collection: {data["collections"]}')
-
-            elif source == 'music':
-                music = get_object_or_404(models.Music, pk=item_id)
-                music.collections.add(collection)
-                return HttpResponse(
-                    f'Track {music.track.url.split("/")[-1]} added to collection: {data["collections"]}')
-            else:
-                raise Http404
-        return render(request, 'dashboard/bad_request.html', {})
-    return redirect('commonops:auth')
-
 
 def find_item(request, item, item_id):
     if request.user.is_authenticated:

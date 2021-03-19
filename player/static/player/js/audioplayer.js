@@ -32,7 +32,7 @@ function playpause() {
     song.play();
     songFile = playlist[currentSong].split("/");
     songName = document.getElementById("songName");
-    songName.innerHTML = songFile[songFile.length - 1];
+    songName.innerText = songFile[songFile.length - 1];
     document.getElementById("glow").classList.remove("disable-animation");
     isStopped = false;
   }
