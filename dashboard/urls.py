@@ -14,7 +14,6 @@ urlpatterns = [
     path('home', views.dashboard_home, name='profile'),
     path('logout', views.logout_view, name='logout'),
     path('edit/find/<str:item>/<int:item_id>', views.find_item, name='find-item'),
-    path('collection/add/<int:item_id>/<str:source>', views.add_to_collection, name='add-to-collection'),
     path('edit/photo/<int:pk>', views.edit_photo_view, name='edit-photo'),
     path('edit/delete/<str:item>/<int:item_id>', views.delete_item, name='delete-item'),
 ]
