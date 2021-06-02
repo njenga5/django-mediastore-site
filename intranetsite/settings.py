@@ -93,8 +93,6 @@ DATABASES = {
         'NAME': env.get('DATABASE_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
         'USER': env.get('DATABASE_USER', ''),
         'PASSWORD': env.get('DATABASE_PASSWORD', ''),
-        'HOST': '',
-        'PORT': '',
         'TIME_ZONE': 'Africa/Nairobi'
     }
 }
